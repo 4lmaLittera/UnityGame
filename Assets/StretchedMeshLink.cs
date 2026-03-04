@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Scales and positions a mesh (typically a cylinder) between two points.
@@ -6,30 +7,40 @@ using UnityEngine;
 /// </summary>
 public class StretchedMeshLink : MonoBehaviour
 {
+    #region Serialized Fields
     [Header("References")]
-    [SerializeField] private Transform startPoint;
-    [SerializeField] private Transform endPoint;
+    [FormerlySerializedAs("startPoint")]
+    [SerializeField] private Transform _startPoint;
+    
+    [FormerlySerializedAs("endPoint")]
+    [SerializeField] private Transform _endPoint;
+    #endregion
 
+    #region Unity Lifecycle
+    void LateUpdate()
+    {
+        if (_startPoint == null || _endPoint == null) return;
+
+        UpdateTransform();
+    }
+    #endregion
+
+    #region Public Methods
     /// <summary>
     /// Programmatically sets the points for the link.
     /// </summary>
     public void SetPoints(Transform start, Transform end)
     {
-        startPoint = start;
-        endPoint = end;
+        _startPoint = start;
+        _endPoint = end;
     }
+    #endregion
 
-    void LateUpdate()
-    {
-        if (startPoint == null || endPoint == null) return;
-
-        UpdateTransform();
-    }
-
+    #region Private Methods
     private void UpdateTransform()
     {
-        Vector3 posA = startPoint.position;
-        Vector3 posB = endPoint.position;
+        Vector3 posA = _startPoint.position;
+        Vector3 posB = _endPoint.position;
 
         // 1. Midpoint Formula for position
         transform.position = (posA + posB) / 2f;
@@ -47,4 +58,5 @@ public class StretchedMeshLink : MonoBehaviour
         currentScale.z = distance / 2f;
         transform.localScale = currentScale;
     }
+    #endregion
 }

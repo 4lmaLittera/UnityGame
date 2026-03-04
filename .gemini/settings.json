@@ -1,12 +1,7 @@
 {
   "mcpServers": {
-    "ai-game-developer": {
-      "command": "command",
-      "args": [
-        "<unityProjectPath>/Library/mcp-server/osx-arm64/unity-mcp-server",
-        "port=52384",
-        "client-transport=stdio"
-      ]
+    "unity-mcp": {
+      "url": "http://localhost:8080/mcp"
     }
   }
 }
