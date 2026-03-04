@@ -7,7 +7,11 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private LineRenderer lr;
     [SerializeField] private Transform hookPoint;
     [SerializeField] private Transform cam;
-    [SerializeField] private Rigidbody playerRb;
+    [SerializeField] private Rigidbody playerRb; [SerializeField] private GameObject grappleMesh;
+
+    private StretchedMeshLink _meshLink;
+    private Transform _grappleTargetTransform;
+
 
     [Header("Settings")]
     [SerializeField] private LayerMask grappleable;
@@ -35,7 +39,30 @@ public class GrapplingHook : MonoBehaviour
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
+        lr.enabled = false; // Replace LineRenderer with GrappleMesh
+
+        if (grappleMesh != null)
+        {
+            _meshLink = grappleMesh.GetComponent<StretchedMeshLink>();
+
+            // Create a target transform for the grapple point
+            // We do NOT parent it to the player so it stays fixed in world space
+            GameObject go = new GameObject("GrappleTarget");
+            _grappleTargetTransform = go.transform;
+
+            _meshLink.SetPoints(hookPoint, _grappleTargetTransform);
+            grappleMesh.SetActive(false);
+        }
     }
+
+    void OnDestroy()
+    {
+        if (_grappleTargetTransform != null)
+        {
+            Destroy(_grappleTargetTransform.gameObject);
+        }
+    }
+
 
     void LateUpdate()
     {
@@ -63,7 +90,11 @@ public class GrapplingHook : MonoBehaviour
             _joint.damper = jointDamper;
             _joint.massScale = jointMassScale;
 
-            lr.positionCount = 2;
+            if (grappleMesh != null)
+            {
+                _grappleTargetTransform.position = _grapplePoint;
+                grappleMesh.SetActive(true);
+            }
         }
     }
 
@@ -89,17 +120,13 @@ public class GrapplingHook : MonoBehaviour
             playerRb.AddForce(combinedDir * pushStrength + Vector3.up * releaseUpwardBoost, ForceMode.Impulse);
 
             // 5. Clean up
-            lr.positionCount = 0;
+            if (grappleMesh != null) grappleMesh.SetActive(false);
             Destroy(_joint);
         }
     }
 
     void DrawRope()
     {
-        // If not grappling, don't draw
-        if (!_joint) return;
-
-        lr.SetPosition(0, hookPoint.position);
-        lr.SetPosition(1, _grapplePoint);
+        // No longer using LineRenderer for rope drawing
     }
 }
