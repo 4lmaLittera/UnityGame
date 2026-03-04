@@ -1,57 +1,84 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
-[RequireComponent(typeof(LineRenderer))]
 public class GrapplingHook : MonoBehaviour
 {
+    #region Serialized Fields
     [Header("References")]
-    [SerializeField] private LineRenderer lr;
-    [SerializeField] private Transform hookPoint;
-    [SerializeField] private Transform cam;
-    [SerializeField] private Rigidbody playerRb; [SerializeField] private GameObject grappleMesh;
-
-    private StretchedMeshLink _meshLink;
-    private Transform _grappleTargetTransform;
-
+    [FormerlySerializedAs("hookPoint")]
+    [SerializeField] private Transform _hookPoint;
+    
+    [FormerlySerializedAs("cam")]
+    [SerializeField] private Transform _cam;
+    
+    [FormerlySerializedAs("playerRb")]
+    [SerializeField] private Rigidbody _playerRb; 
+    
+    [FormerlySerializedAs("grappleMesh")]
+    [SerializeField] private GameObject _grappleMesh;
 
     [Header("Settings")]
-    [SerializeField] private LayerMask grappleable;
-    [SerializeField] private float maxDistance = 100f;
-    [SerializeField] private float jointSpring = 15f;
-    [SerializeField] private float jointDamper = 10f;
-    [SerializeField] private float jointMassScale = 4.5f;
+    [FormerlySerializedAs("grappleable")]
+    [SerializeField] private LayerMask _grappleable;
+    
+    [FormerlySerializedAs("maxDistance")]
+    [SerializeField] private float _maxDistance = 100f;
+    
+    [FormerlySerializedAs("jointSpring")]
+    [SerializeField] private float _jointSpring = 15f;
+    
+    [FormerlySerializedAs("jointDamper")]
+    [SerializeField] private float _jointDamper = 10f;
+    
+    [FormerlySerializedAs("jointMassScale")]
+    [SerializeField] private float _jointMassScale = 4.5f;
 
     [Header("Release Boost")]
-    [Tooltip("How much of your current speed is added as a push when releasing.")]
-    [SerializeField] private float velocityPushMultiplier = 0.5f;
-    [Tooltip("The maximum push force allowed on release.")]
-    [SerializeField] private float maxReleasePush = 20f;
-    [Tooltip("The minimum push force allowed on release.")]
-    [SerializeField] private float minReleasePush = 3f;
-    [Tooltip("0 = push in movement direction, 1 = push in look direction.")]
+    [FormerlySerializedAs("velocityPushMultiplier")]
+    [SerializeField] private float _velocityPushMultiplier = 0.5f;
+    
+    [FormerlySerializedAs("maxReleasePush")]
+    [SerializeField] private float _maxReleasePush = 20f;
+    
+    [FormerlySerializedAs("minReleasePush")]
+    [SerializeField] private float _minReleasePush = 3f;
+    
+    [FormerlySerializedAs("lookDirectionWeight")]
     [Range(0, 1)]
-    [SerializeField] private float lookDirectionWeight = 0.3f;
-    [Tooltip("A flat upward boost added on release to help with height.")]
-    [SerializeField] private float releaseUpwardBoost = 2f;
+    [SerializeField] private float _lookDirectionWeight = 0.3f;
+    
+    [FormerlySerializedAs("releaseUpwardBoost")]
+    [SerializeField] private float _releaseUpwardBoost = 2f;
+    #endregion
 
+    #region Private Fields
+    private StretchedMeshLink _meshLink;
+    private Transform _grappleTargetTransform;
     private Vector3 _grapplePoint;
     private SpringJoint _joint;
+    private bool _isGrappling;
+    #endregion
 
+    #region Unity Lifecycle
     void Awake()
     {
-        lr = GetComponent<LineRenderer>();
-        lr.enabled = false; // Replace LineRenderer with GrappleMesh
-
-        if (grappleMesh != null)
+        if (_grappleMesh != null)
         {
-            _meshLink = grappleMesh.GetComponent<StretchedMeshLink>();
+            _meshLink = _grappleMesh.GetComponent<StretchedMeshLink>();
+
+            if (_meshLink == null)
+            {
+                Debug.LogError($"GrappleMesh '{_grappleMesh.name}' is missing a StretchedMeshLink component!", this);
+                return;
+            }
 
             // Create a target transform for the grapple point
             // We do NOT parent it to the player so it stays fixed in world space
             GameObject go = new GameObject("GrappleTarget");
             _grappleTargetTransform = go.transform;
 
-            _meshLink.SetPoints(hookPoint, _grappleTargetTransform);
-            grappleMesh.SetActive(false);
+            _meshLink.SetPoints(_hookPoint, _grappleTargetTransform);
+            _grappleMesh.SetActive(false);
         }
     }
 
@@ -62,71 +89,74 @@ public class GrapplingHook : MonoBehaviour
             Destroy(_grappleTargetTransform.gameObject);
         }
     }
+    #endregion
 
-
-    void LateUpdate()
-    {
-        DrawRope();
-    }
-
+    #region Public Methods
     public void StartGrapple()
     {
+        // Prevent multiple simultaneous hooks
+        if (_isGrappling) return;
+
         RaycastHit hit;
-        if (Physics.Raycast(cam.position, cam.forward, out hit, maxDistance, grappleable))
+        if (Physics.Raycast(_cam.position, _cam.forward, out hit, _maxDistance, _grappleable))
         {
+            _isGrappling = true;
             _grapplePoint = hit.point;
-            _joint = playerRb.gameObject.AddComponent<SpringJoint>();
+            _joint = _playerRb.gameObject.AddComponent<SpringJoint>();
             _joint.autoConfigureConnectedAnchor = false;
             _joint.connectedAnchor = _grapplePoint;
 
-            float distanceFromPoint = Vector3.Distance(playerRb.position, _grapplePoint);
+            float distanceFromPoint = Vector3.Distance(_playerRb.position, _grapplePoint);
 
             // The distance grapple will try to keep from grapple point. 
             _joint.maxDistance = distanceFromPoint * 0.8f;
             _joint.minDistance = distanceFromPoint * 0.25f;
 
             // Customize these values to change the feel of the grapple
-            _joint.spring = jointSpring;
-            _joint.damper = jointDamper;
-            _joint.massScale = jointMassScale;
+            _joint.spring = _jointSpring;
+            _joint.damper = _jointDamper;
+            _joint.massScale = _jointMassScale;
 
-            if (grappleMesh != null)
+            if (_grappleMesh != null)
             {
                 _grappleTargetTransform.position = _grapplePoint;
-                grappleMesh.SetActive(true);
+                _grappleMesh.SetActive(true);
             }
         }
     }
 
     public void StopGrapple()
     {
-        if (_joint != null)
+        if (_isGrappling)
         {
-            // 1. Calculate the push strength based on current swing speed
-            Vector3 currentVel = playerRb.linearVelocity;
-            float speed = currentVel.magnitude;
+            _isGrappling = false;
 
-            // 2. Blend the current velocity direction with the look direction
-            Vector3 moveDir = currentVel.normalized;
-            Vector3 lookDir = cam.forward;
+            if (_joint != null)
+            {
+                // 1. Calculate the push strength based on current swing speed
+                Vector3 currentVel = _playerRb.linearVelocity;
+                float speed = currentVel.magnitude;
 
-            // 3. Combine directions and add upward influence
-            Vector3 combinedDir = Vector3.Lerp(moveDir, lookDir, lookDirectionWeight).normalized;
-            combinedDir = (combinedDir + Vector3.up * 0.2f).normalized; // Slight upward tilt to the exit vector
+                // 2. Blend the current velocity direction with the look direction
+                Vector3 moveDir = currentVel.normalized;
+                Vector3 lookDir = _cam.forward;
 
-            float pushStrength = Mathf.Clamp(speed * velocityPushMultiplier, minReleasePush, maxReleasePush);
+                // 3. Combine directions and add upward influence
+                Vector3 combinedDir = Vector3.Lerp(moveDir, lookDir, _lookDirectionWeight).normalized;
+                combinedDir = (combinedDir + Vector3.up * 0.2f).normalized; // Slight upward tilt to the exit vector
 
-            // 4. Apply the impulse boost + the flat upward kick
-            playerRb.AddForce(combinedDir * pushStrength + Vector3.up * releaseUpwardBoost, ForceMode.Impulse);
+                float pushStrength = Mathf.Clamp(speed * _velocityPushMultiplier, _minReleasePush, _maxReleasePush);
 
-            // 5. Clean up
-            if (grappleMesh != null) grappleMesh.SetActive(false);
-            Destroy(_joint);
+                // 4. Apply the impulse boost + the flat upward kick
+                _playerRb.AddForce(combinedDir * pushStrength + Vector3.up * _releaseUpwardBoost, ForceMode.Impulse);
+
+                // 5. Clean up
+                Destroy(_joint);
+                _joint = null;
+            }
+
+            if (_grappleMesh != null) _grappleMesh.SetActive(false);
         }
     }
-
-    void DrawRope()
-    {
-        // No longer using LineRenderer for rope drawing
-    }
+    #endregion
 }

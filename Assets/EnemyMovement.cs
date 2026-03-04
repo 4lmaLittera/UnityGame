@@ -1,22 +1,31 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public Transform player;
-    private NavMeshAgent navMeshAgent;
+    #region Serialized Fields
+    [Header("References")]
+    [FormerlySerializedAs("player")]
+    [SerializeField] private Transform _player;
+    #endregion
+
+    #region Private Fields
+    private NavMeshAgent _navMeshAgent;
+    #endregion
+
+    #region Unity Lifecycle
     void Start()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (player != null)
+        if (_player != null && _navMeshAgent != null)
         {
-            navMeshAgent.SetDestination(player.position);
+            _navMeshAgent.SetDestination(_player.position);
         }
-
     }
+    #endregion
 }
