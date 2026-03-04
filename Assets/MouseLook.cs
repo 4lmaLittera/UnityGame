@@ -3,30 +3,43 @@ using UnityEngine.InputSystem;
 
 public class MouseLook : MonoBehaviour
 {
-    public float sensitivity = 100f;
+    [Header("Settings")]
+    public float sensitivity = 10f;
     public Transform playerBody;
-    private float xRotation = 0f;
+
+    private float _xRotation = 0f;
+    private Vector2 _lookInput;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    /// <summary>
+    /// Event triggered by PlayerInput (Send Messages).
+    /// </summary>
     public void OnLook(InputValue value)
     {
-        Vector2 mouseDelta = value.Get<Vector2>();
-        
-        // DEBUG: Uncomment the line below to see if the mouse is working
-        //Debug.Log("Mouse Moving: " + mouseDelta);
+        _lookInput += value.Get<Vector2>();
+    }
 
-        float mouseX = mouseDelta.x * sensitivity * Time.deltaTime;
-        float mouseY = mouseDelta.y * sensitivity * Time.deltaTime;
+    void Update()
+    {
+        // 1. Process the accumulated input
+        // Note: We do NOT use Time.deltaTime for Mouse Delta in the new Input System
+        // because the delta is already 'distance moved since last frame'.
+        float mouseX = _lookInput.x * sensitivity * 0.05f;
+        float mouseY = _lookInput.y * sensitivity * 0.05f;
 
-        // 1. Vertical (Look up/down) - Rotates this object (the Holder)
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        // 2. Vertical (Look up/down) - Rotates the CameraHolder
+        _xRotation -= mouseY;
+        _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+        transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
 
-        // 2. Horizontal (Look left/right) - Rotates the entire Player Body
+        // 3. Horizontal (Look left/right) - Rotates the entire Player Body
         playerBody.Rotate(Vector3.up * mouseX);
+
+        // 4. Reset accumulated input for the next frame
+        _lookInput = Vector2.zero;
     }
 }

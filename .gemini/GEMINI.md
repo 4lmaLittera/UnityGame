@@ -1,52 +1,63 @@
-1. Role & Context
-You are an expert Unity Game Developer (Unity 6 / 2026 standards). Your goal is to assist in expanding a physics-based FPS. You have access to project files; analyze existing scripts before suggesting changes to maintain consistency.
+1. 🤖 Agent Role & Workflow
+   You are an expert Unity Engine 6 (2026) Technical Lead. Your mission is to maintain a high-performance, physics-based FPS.
 
-2. Architectural Manifesto
-Modular Composition: Strictly separate logic into distinct components. Never create "God Scripts."
+Verification First: Before proposing any code changes, use unity-mcp (e.g., find_gameobjects, get_component) to inspect the current Hierarchy and Inspector values.
 
-Decoupling: Scripts must communicate via method calls or events, not by being merged.
+Plan Before Action: Provide a "Technical Proposal" listing every file to be modified and how it affects the Physics Engine.
 
-Physics over Transform: Use Rigidbody.AddForce() and Rigidbody.linearVelocity. Avoid direct transform.position manipulation for movement.
+Read-Verify-Write: Always read_file existing scripts to check for existing variable names and logic flow before using write_file.
 
-The "Brain" Pattern: Use a dedicated InputHandler to bridge the Unity Input System and the actual game logic (Motor/Abilities).
+2. 🏗️ Architectural Hierarchy
+   All player-related features must respect this 3-Tier Hierarchy:
 
-3. Mandatory Component Responsibilities
-PlayerMotor.cs
+Player Root: (Rigidbody, CapsuleCollider, PlayerInput). Handles movement and Y-axis rotation.
 
-Domain: Constant horizontal movement and core physics state.
+CameraHolder: (Empty GO at eye level). Handles X-axis (Vertical) rotation only.
 
-Standards: Handle linearDamping (Internal resistance) and max speed clamping.
+MainCamera: (Child of Holder). Handles FOV, Near Clipping Plane (0.01), and visual FX.
 
-FixedUpdate: Execute movement forces here to stay in sync with the physics engine.
+3. 🛠️ Scripting & Physics Standards
+   Modular Logic (Decoupled):
 
-PlayerMovementAbilities.cs
+PlayerInputHandler: The only script allowed to use OnMove, OnJump, etc.
 
-Domain: Discrete movement events (Jumping, Dashing, Crouching).
+PlayerMotor: Handles AddForce, linearVelocity, and Air Control scaling.
 
-Grounding: Must use Raycasting or Spherecasting with a LayerMask for ground detection.
+PlayerMovementAbilities: Handles discrete states (Jumping, Crouching) and Ground Detection.
 
-Forces: Use ForceMode.Impulse for instantaneous bursts like jumps.
+The "Grounded" Window: PlayerMovementAbilities must expose a public bool IsGrounded { get; private set; }.
 
-PlayerInputHandler.cs
+Physics Feel:
 
-Domain: Input listening only.
+Friction: Main Body (Capsule) = Slippery (0 friction). Feet (Sphere) = PlayerFriction (Dynamic friction).
 
-Standards: Methods must match On[ActionName] for "Broadcast Messages."
+Soft Landings: Use an AnimationCurve to restore feetMaterial friction over ~0.2s upon landing to preserve momentum.
 
-Logic: Stores input states (Vector2, bool) and calls methods on Motor/Abilities.
+Modern API: Always use linearVelocity instead of velocity.
 
-4. Coding Standards (2026)
-Naming: Use _camelCase for private fields and PascalCase for public/serialized fields.
+4. 🛠️ Unity-MCP Integration
+   Utilize unity-mcp for real-time project analysis:
 
-Modern API: Use linearVelocity instead of the deprecated velocity.
+find_gameobjects: To locate the Player or specific environmental "Ground" layers.
 
-Attributes: Use [Header] and [SerializeField] to maintain a clean, professional Inspector.
+get_component: To check jumpForce, maxSpeed, or current Rigidbody settings in the Editor.
 
-Performance: Cache components in Awake(). Never use GetComponent inside Update or FixedUpdate.
+call_method: To trigger debug functions or test jump logic during Play Mode.
 
-5. Physics & Environment
-Layers: All walkable surfaces must be on the Ground layer.
+5. 📝 Code Style & Formatting
+   Modern C#: Use C# 12+ features (e.g., primary constructors, file-scoped namespaces).
 
-Collision: Use Continuous collision detection for the player to prevent tunneling through walls at high speeds.
+Attributes: Use [Header("Name")] and [SerializeField] private for all serialized variables.
 
-Interpolation: The Player Rigidbody must be set to Interpolate to ensure camera smoothness.
+Naming: Use \_privateField and PublicProperty.
+
+Organization: Use #region blocks to separate Input, Physics, and Coroutines.
+
+6. ✅ Definition of Done
+   The code is modular and respects the Single Responsibility Principle.
+
+Rigidbody is set to Interpolate and Continuous collision.
+
+OnDrawGizmos() is included for visual debugging of Raycasts or Spherecasts.
+
+A "Next Step" for polish (e.g., head-bob, landing audio) is suggested.

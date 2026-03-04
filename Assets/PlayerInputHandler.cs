@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,33 +5,44 @@ public class PlayerInputHandler : MonoBehaviour
 {
     private PlayerMotor _motor;
     private PlayerMovementAbilities _abilities;
+    private GrapplingHook _grapplingHook;
     private Vector2 _moveInput;
 
     void Awake()
     {
-        // Link to our other components on the same object
         _motor = GetComponent<PlayerMotor>();
         _abilities = GetComponent<PlayerMovementAbilities>();
+        _grapplingHook = GetComponent<GrapplingHook>();
     }
 
-    // Action Name: "Move" in Input Action Asset
     public void OnMove(InputValue value)
     {
         _moveInput = value.Get<Vector2>();
     }
 
-    // Action Name: "Jump" in Input Action Asset
     public void OnJump(InputValue value)
     {
         if (value.isPressed)
         {
             _abilities.ExecuteJump();
+            _grapplingHook.StopGrapple();
+        }
+    }
+
+    public void OnGrapple(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            _grapplingHook.StartGrapple();
+        }
+        else
+        {
+            _grapplingHook.StopGrapple();
         }
     }
 
     void FixedUpdate()
     {
-        // Send the stored move data to the Motor every physics frame
         _motor.ProcessMove(_moveInput);
     }
 }
