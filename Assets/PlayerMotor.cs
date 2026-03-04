@@ -47,6 +47,6 @@ public class PlayerMotor : MonoBehaviour
             _rb.AddForce(moveDir * currentForce, ForceMode.Acceleration);
         }
 
-        Debug.Log(horizontalVel);
+        //Debug.Log(horizontalVel);
     }
 }
