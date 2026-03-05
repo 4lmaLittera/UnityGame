@@ -22,7 +22,7 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        if (_player != null && _navMeshAgent != null)
+        if (_player != null && _navMeshAgent != null && _navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh)
         {
             _navMeshAgent.SetDestination(_player.position);
         }
