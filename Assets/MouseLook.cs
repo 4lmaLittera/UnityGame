@@ -1,60 +1,74 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class MouseLook : MonoBehaviour
 {
     #region Serialized Fields
     [Header("Settings")]
-    [FormerlySerializedAs("sensitivity")]
-    [SerializeField] private float _sensitivity = 10f;
-    
-    [FormerlySerializedAs("playerBody")]
+    [SerializeField] private float _sensitivity = 15f; // Tuned for better control
     [SerializeField] private Transform _playerBody;
     #endregion
 
     #region Private Fields
     private float _xRotation = 0f;
+    private float _yRotation = 0f;
     private Vector2 _lookInput;
+    private Rigidbody _playerRb;
     #endregion
 
     #region Unity Lifecycle
+    void Awake()
+    {
+        if (_playerBody != null)
+        {
+            _playerRb = _playerBody.GetComponent<Rigidbody>();
+        }
+    }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
+        // Initialize rotations from current orientation
+        _xRotation = transform.localEulerAngles.x;
+        if (_playerBody != null)
+        {
+            _yRotation = _playerBody.eulerAngles.y;
+        }
     }
 
     void Update()
     {
-        // 1. Process the accumulated input
-        // Note: We do NOT use Time.deltaTime for Mouse Delta in the new Input System
-        // because the delta is already 'distance moved since last frame'.
-        float mouseX = _lookInput.x * _sensitivity * 0.05f;
-        float mouseY = _lookInput.y * _sensitivity * 0.05f;
+        // 1. Process Input with deltaTime
+        float mouseX = _lookInput.x * _sensitivity * Time.deltaTime;
+        float mouseY = _lookInput.y * _sensitivity * Time.deltaTime;
 
-        // 2. Vertical (Look up/down) - Rotates the CameraHolder
+        // 2. Vertical (Look up/down) - Direct Transform Manipulation
+        // This is smooth because the CameraHolder is usually not a Rigidbody.
         _xRotation -= mouseY;
         _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
         transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
 
-        // 3. Horizontal (Look left/right) - Rotates the entire Player Body
-        if (_playerBody != null)
-        {
-            _playerBody.Rotate(Vector3.up * mouseX);
-        }
+        // 3. Horizontal (Look left/right) - Calculate target rotation
+        _yRotation += mouseX;
 
-        // 4. Reset accumulated input for the next frame
-        _lookInput = Vector2.zero;
+        // 4. Apply to Player Body using MoveRotation for Interpolation support
+        if (_playerRb != null)
+        {
+            // MoveRotation is the only way to get smooth results with an Interpolated Rigidbody
+            _playerRb.MoveRotation(Quaternion.Euler(0f, _yRotation, 0f));
+        }
+        else if (_playerBody != null)
+        {
+            _playerBody.rotation = Quaternion.Euler(0f, _yRotation, 0f);
+        }
     }
     #endregion
 
     #region Input Handlers
-    /// <summary>
-    /// Event triggered by PlayerInput (Send Messages).
-    /// </summary>
     public void OnLook(InputValue value)
     {
-        _lookInput += value.Get<Vector2>();
+        _lookInput = value.Get<Vector2>();
     }
     #endregion
 }

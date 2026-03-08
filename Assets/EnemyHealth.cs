@@ -43,19 +43,5 @@ public class EnemyHealth : MonoBehaviour
         }
     }
     #endregion
-
-    #region Collision Handling
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Direct hits on the root
-        if (collision.gameObject.GetComponent<DaggerProjectile>() != null)
-        {
-            Rigidbody daggerRb = collision.gameObject.GetComponent<Rigidbody>();
-            Vector3 force = daggerRb != null ? daggerRb.linearVelocity * 2f : Vector3.zero;
-
-            TakeDamage(_maxHealth, force, collision.contacts[0].point);
-        }
-    }
-    #endregion
 }
 

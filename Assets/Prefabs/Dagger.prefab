@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2181350436142965405}
   - component: {fileID: 2001538775083445227}
   - component: {fileID: 9135538683900400712}
-  - component: {fileID: 2720968194066657263}
+  - component: {fileID: -2971495344999347139}
   m_Layer: 9
   m_Name: Dagger
   m_TagString: Untagged
@@ -141,7 +141,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &2720968194066657263
+--- !u!114 &-2971495344999347139
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,6 +153,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484ef7d06f6347e58a83ad242a12fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DaggerProjectile
-  _lifetime: 5
+  _lifetime: 10
   _faceTravelDirection: 1
   _rotationSpeed: 10
+  _damage: 25
+  _forceMultiplier: 2
+  _baseThrowForce: 5
+  _upwardForce: 1
+  _throwRotationAxis: {x: 0, y: 1, z: 0}
+  _throwRotationSpeed: 900
