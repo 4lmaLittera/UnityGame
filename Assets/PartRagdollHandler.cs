@@ -3,7 +3,7 @@ using UnityEngine.AI;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody), typeof(NavMeshAgent))]
-public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
+public class PartRagdollHandler : MonoBehaviour, IRagdollHandler, IPoolableEnemy
 {
     #region Serialized Fields
     [Header("Settings")]
@@ -67,7 +67,11 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
         if (_isRagdoll) return;
         _isRagdoll = true;
 
-        // 1. Disable root logic and physics
+        // 1. Disable Animator so physics can take over bones
+        Animator animator = GetComponent<Animator>();
+        if (animator != null) animator.enabled = false;
+
+        // 2. Disable root logic and physics
         if (_agent != null) _agent.enabled = false;
 
         var movement = GetComponent<EnemyMovement>();
@@ -76,7 +80,7 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
         foreach (var col in _rootColliders) col.enabled = false;
         _rootRb.isKinematic = true;
 
-        // 2. Enable bone physics
+        // 3. Enable bone physics
         foreach (var rb in _boneRigidbodies)
         {
             rb.isKinematic = false;
@@ -84,7 +88,7 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
             rb.useGravity = true;
         }
 
-        // 3. Apply force to specific bone or generic center
+        // 4. Apply force to specific bone or generic center
         if (hitBone != null)
         {
             hitBone.AddForceAtPosition(impactForce, impactPoint, ForceMode.Impulse);
@@ -95,6 +99,53 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
         }
 
         Debug.Log($"{name} triggered Part-Based Ragdoll!");
+    }
+    #endregion
+
+    #region IPoolableEnemy Implementation
+    public void OnSpawn()
+    {
+        _isRagdoll = false;
+
+        // Reset Root
+        if (_rootRb != null)
+        {
+            _rootRb.isKinematic = true; // Root is kinematic while agent moves
+        }
+
+        // Disable root colliders again as they might have been toggled
+        foreach (var col in _rootColliders)
+        {
+            col.enabled = false; 
+        }
+
+        // Re-enable logic
+        if (_agent != null) _agent.enabled = true;
+        var movement = GetComponent<EnemyMovement>();
+        if (movement != null) movement.enabled = true;
+
+        // Reset Bones to animation state
+        foreach (var rb in _boneRigidbodies)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            // detectCollisions stays true so they can be hit
+        }
+
+        // Force the Animator to snap bones back from their physics ragdoll pose
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.enabled = false;
+            animator.enabled = true;
+            animator.Rebind();
+            animator.Update(0f);
+        }
+    }
+
+    public void OnDespawn()
+    {
+        // Cleanup happens in OnSpawn for next use, but we can do it here too if needed
     }
     #endregion
 }
