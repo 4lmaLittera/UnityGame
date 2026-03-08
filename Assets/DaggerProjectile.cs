@@ -17,6 +17,7 @@ public class DaggerProjectile : MonoBehaviour, IDamageSource
     [Header("Throw Settings")]
     [SerializeField] private float _baseThrowForce = 35f;
     [SerializeField] private float _upwardForce = 2f;
+    [SerializeField] private float _throwCooldown = 0.5f;
 
     [Header("Throw Rotation Settings")]
     [Tooltip("Axis the projectile spins around when thrown. Vector3.forward (Z) makes it spiral. Vector3.right (X) makes it flip.")]
@@ -41,6 +42,7 @@ public class DaggerProjectile : MonoBehaviour, IDamageSource
 
     public float BaseThrowForce => _baseThrowForce;
     public float UpwardForce => _upwardForce;
+    public float ThrowCooldown => _throwCooldown;
 
     public Vector3 RotationAxis => _throwRotationAxis;
     public float RotationSpeed => _throwRotationSpeed;

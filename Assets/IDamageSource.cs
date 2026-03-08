@@ -8,6 +8,7 @@ public interface IDamageSource
     // Per-weapon throw settings
     float BaseThrowForce { get; }
     float UpwardForce { get; }
+    float ThrowCooldown { get; }
 
     // Per-weapon rotation settings
     Vector3 RotationAxis { get; }
