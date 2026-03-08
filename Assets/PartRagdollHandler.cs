@@ -15,7 +15,7 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
     private NavMeshAgent _agent;
     private List<Collider> _rootColliders = new();
     private bool _isRagdoll = false;
-    
+
     private List<Rigidbody> _boneRigidbodies = new();
     #endregion
 
@@ -25,6 +25,10 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
         _rootRb = GetComponent<Rigidbody>();
         _agent = GetComponent<NavMeshAgent>();
         _rootColliders.AddRange(GetComponents<Collider>());
+
+        // Disable root physics while alive so NavMeshAgent can move freely
+        // and CharacterJoints don't pull against a dynamic root body.
+        if (_rootRb != null) _rootRb.isKinematic = true;
 
         if (_ragdollRoot == null) _ragdollRoot = transform;
         SetupRagdoll();
@@ -38,10 +42,11 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
         foreach (var rb in rbs)
         {
             if (rb == _rootRb) continue;
-            
+
             rb.isKinematic = true;
+            rb.detectCollisions = false;
             _boneRigidbodies.Add(rb);
-            
+
             // Link bone to this handler
             var part = rb.gameObject.GetComponent<EnemyBodyPart>();
             if (part == null) part = rb.gameObject.AddComponent<EnemyBodyPart>();
@@ -58,7 +63,7 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
 
         // 1. Disable root logic and physics
         if (_agent != null) _agent.enabled = false;
-        
+
         var movement = GetComponent<EnemyMovement>();
         if (movement != null) movement.enabled = false;
 
@@ -69,6 +74,7 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
         foreach (var rb in _boneRigidbodies)
         {
             rb.isKinematic = false;
+            rb.detectCollisions = true;
             rb.useGravity = true;
         }
 

@@ -36,7 +36,7 @@ public class EnemyHealth : MonoBehaviour
     private void Die(Vector3 impactForce, Vector3 impactPoint, Rigidbody hitBone = null)
     {
         _isDead = true;
-        
+
         if (_ragdollHandler != null)
         {
             _ragdollHandler.TriggerRagdoll(impactForce, impactPoint, hitBone);
@@ -52,7 +52,7 @@ public class EnemyHealth : MonoBehaviour
         {
             Rigidbody daggerRb = collision.gameObject.GetComponent<Rigidbody>();
             Vector3 force = daggerRb != null ? daggerRb.linearVelocity * 2f : Vector3.zero;
-            
+
             TakeDamage(_maxHealth, force, collision.contacts[0].point);
         }
     }
