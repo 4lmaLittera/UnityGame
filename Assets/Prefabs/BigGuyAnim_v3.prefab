@@ -1340,9 +1340,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7589990619055680587}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4bdf56488ff134258b00ce708bd390dc, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fcecc921394c54ee0b2a7edb477b95c9, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1366,7 +1366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ce22b0e14224559a74e8c12bd01b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  _maxHealth: 100
+  _maxHealth: 40
+  _ragdollDuration: 3
 --- !u!114 &1726922928415517333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1416,7 +1417,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7589990619055680587}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1.6
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1425,7 +1426,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 9
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

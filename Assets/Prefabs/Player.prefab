@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _pushForce: 30
   _maxSpeed: 10
-  _airControlMultiplier: 0.2
+  _airControlMultiplier: 0.3
 --- !u!114 &4348351684679206556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +275,7 @@ MonoBehaviour:
   _velocityPushMultiplier: 0.5
   _maxReleasePush: 20
   _minReleasePush: 3
-  _lookDirectionWeight: 0.3
+  _lookDirectionWeight: 0.5
   _releaseUpwardBoost: 2
 --- !u!114 &919924620872764575
 MonoBehaviour:
