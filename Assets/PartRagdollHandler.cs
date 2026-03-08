@@ -24,7 +24,13 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
     {
         _rootRb = GetComponent<Rigidbody>();
         _agent = GetComponent<NavMeshAgent>();
+        
+        // Find and potentially disable root colliders so they don't block hits to body parts
         _rootColliders.AddRange(GetComponents<Collider>());
+        foreach (var col in _rootColliders)
+        {
+            col.enabled = false; // Disable root colliders to allow hits to reach bones
+        }
 
         // Disable root physics while alive so NavMeshAgent can move freely
         // and CharacterJoints don't pull against a dynamic root body.
@@ -44,7 +50,7 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler
             if (rb == _rootRb) continue;
 
             rb.isKinematic = true;
-            rb.detectCollisions = false;
+            rb.detectCollisions = true;
             _boneRigidbodies.Add(rb);
 
             // Link bone to this handler

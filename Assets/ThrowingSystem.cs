@@ -5,24 +5,18 @@ using UnityEngine.Serialization;
 public class ThrowingSystem : MonoBehaviour
 {
     #region Serialized Fields
-    [Header("Settings")]
-    [FormerlySerializedAs("weaponPrefab")]
+    [Header("References")]
     [SerializeField] private GameObject _weaponPrefab;
-
-    [FormerlySerializedAs("throwPoint")]
     [SerializeField] private Transform _throwPoint;
 
-    [FormerlySerializedAs("throwForce")]
-    [SerializeField] private float _throwForce = 25f;
-
-    [FormerlySerializedAs("throwUpwardForce")]
-    [SerializeField] private float _throwUpwardForce = 5f;
-
-    [FormerlySerializedAs("throwCooldown")]
+    [Header("System Settings")]
     [SerializeField] private float _throwCooldown = 0.5f;
-
-    [FormerlySerializedAs("maxDaggers")]
     [SerializeField] private int _maxDaggers = 10;
+
+    [Header("Default Physics Fallback")]
+    [Tooltip("Used only if the projectile prefab doesn't have an IDamageSource component")]
+    [SerializeField] private float _defaultThrowForce = 25f;
+    [SerializeField] private float _defaultUpwardForce = 5f;
     #endregion
 
     #region Private Fields
@@ -69,14 +63,25 @@ public class ThrowingSystem : MonoBehaviour
         }
 
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        if (rb == null) return;
+
+        // Get force and rotation settings from the weapon itself
+        float currentThrowForce = _defaultThrowForce;
+        float currentUpwardForce = _defaultUpwardForce;
+
+        IDamageSource damageSource = projectile.GetComponent<IDamageSource>();
+        if (damageSource != null)
+        {
+            currentThrowForce = damageSource.BaseThrowForce;
+            currentUpwardForce = damageSource.UpwardForce;
+        }
 
         // Calculate direction with upward arc
-        Vector3 throwDirection = _throwPoint.forward * _throwForce + Vector3.up * _throwUpwardForce;
+        Vector3 throwDirection = _throwPoint.forward * currentThrowForce + Vector3.up * currentUpwardForce;
 
         rb.AddForce(throwDirection, ForceMode.Impulse);
 
-        // Add some random torque for a more dynamic "toss" feel
-        rb.AddTorque(Random.insideUnitSphere * 10f, ForceMode.Impulse);
+        // Note: Projectiles with IDamageSource now handle their own spin mathematically in FixedUpdate.
     }
     #endregion
 }

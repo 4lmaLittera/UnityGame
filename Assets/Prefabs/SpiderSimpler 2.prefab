@@ -2232,7 +2232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ce22b0e14224559a74e8c12bd01b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  _maxHealth: 100
+  _maxHealth: 20
 --- !u!136 &8497889843100152314
 CapsuleCollider:
   m_ObjectHideFlags: 0
