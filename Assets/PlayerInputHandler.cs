@@ -57,7 +57,15 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (value.isPressed && _throwingSystem != null)
         {
-            _throwingSystem.Throw();
+            _throwingSystem.ThrowPrimary();
+        }
+    }
+
+    public void OnSecondaryAttack(InputValue value)
+    {
+        if (value.isPressed && _throwingSystem != null)
+        {
+            _throwingSystem.ThrowSecondary();
         }
     }
     #endregion
