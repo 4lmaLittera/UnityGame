@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -8828874982568462918}
   - component: {fileID: -4133123034641829536}
   - component: {fileID: 189094922904492348}
+  - component: {fileID: -5238324165147594347}
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -139,6 +140,7 @@ MonoBehaviour:
   _forceMultiplier: 2
   _baseThrowForce: 20
   _upwardForce: 2
+  _throwCooldown: 0.5
   _throwRotationAxis: {x: 1, y: 0, z: 0}
   _throwRotationSpeed: 1000
 --- !u!136 &189094922904492348
@@ -164,3 +166,23 @@ CapsuleCollider:
   m_Height: 0.54629946
   m_Direction: 1
   m_Center: {x: 0.17053486, y: 0.78168535, z: 0}
+--- !u!114 &-5238324165147594347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8398251629471199887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c5e9289c5e243a4a1cc846c1e2d1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HomingEffect
+  _isHomingEnabled: 1
+  _turnSpeed: 3
+  _detectionRadius: 8
+  _maxHomingAngle: 40
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _delayBeforeHoming: 0.1
