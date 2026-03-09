@@ -23,6 +23,11 @@ public class PlayerMotor : MonoBehaviour
     private PlayerMovementAbilities _abilities;
     #endregion
 
+    #region Properties
+    public Vector3 CurrentVelocity => _rb.linearVelocity;
+    public float MaxSpeed => _maxSpeed;
+    #endregion
+
     #region Unity Lifecycle
     void Awake()
     {

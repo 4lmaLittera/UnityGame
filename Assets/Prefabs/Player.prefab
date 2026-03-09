@@ -289,12 +289,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b87cb8f8e24744a929367be2703d6dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _weaponPrefab: {fileID: 8398251629471199887, guid: a0b8bf5a536494833bec0b96884b8bc3, type: 3}
+  _primaryWeaponPrefab: {fileID: 0}
+  _secondaryWeaponPrefab: {fileID: 0}
   _throwPoint: {fileID: 4136256047033970733}
-  _throwCooldown: 0.5
-  _maxDaggers: 10
+  _maxActiveProjectiles: 10
   _defaultThrowForce: 5
   _defaultUpwardForce: 2
+  _defaultThrowCooldown: 0.5
 --- !u!1 &659304959305824597
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,6 +308,7 @@ GameObject:
   - component: {fileID: 8298577122711351757}
   - component: {fileID: 4839073461053809156}
   - component: {fileID: 41786919041849341}
+  - component: {fileID: 8974051055749299532}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: Untagged
@@ -432,6 +434,34 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &8974051055749299532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659304959305824597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1c028b2e33634b2eac7405bca5af4dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCameraEffects
+  _motor: {fileID: 3778986806470772171}
+  _abilities: {fileID: 4348351684679206556}
+  _input: {fileID: 3519013022455407339}
+  _bobFrequency: 1.2
+  _bobAmplitude: 0.05
+  _speedForMaxBob: 8
+  _dipMultiplier: 0.05
+  _maxDipAmount: 0.5
+  _dipSpeed: 15
+  _recoverySpeed: 5
+  _maxTiltAngle: 2
+  _tiltSpeed: 5
+  _baseFOV: 90
+  _maxFOV: 105
+  _speedForMaxFOV: 15
+  _fovLerpSpeed: 5
 --- !u!1 &752992458207975843
 GameObject:
   m_ObjectHideFlags: 0

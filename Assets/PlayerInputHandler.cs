@@ -11,6 +11,10 @@ public class PlayerInputHandler : MonoBehaviour
     private Vector2 _moveInput;
     #endregion
 
+    #region Properties
+    public Vector2 MoveInput => _moveInput;
+    #endregion
+
     #region Unity Lifecycle
     void Awake()
     {
