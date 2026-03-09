@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2974492331586524809}
   - component: {fileID: 8292017465612638625}
   - component: {fileID: 2366577444076060136}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3823477337218722988}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: hip.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 7326232176537758812}
   - component: {fileID: 2807427049710952589}
   - component: {fileID: 8933823100588368105}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: femur.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 7889030192615724496}
   - component: {fileID: 554095226592748424}
   - component: {fileID: 8518583466187690501}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: arm.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2667396071586243881}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: colarbone.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 3251586345906645294}
   - component: {fileID: 8079213575045933527}
   - component: {fileID: 4019834724643213932}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: forearm.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -592,7 +592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6879491023320728292}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: femur.R.002_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -623,7 +623,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1094251813482641600}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -654,7 +654,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3032365840870933642}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: hip.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -689,7 +689,7 @@ GameObject:
   - component: {fileID: 2693729211541502474}
   - component: {fileID: 3739187298105450921}
   - component: {fileID: 7570260429806388865}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: femur.R.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -817,7 +817,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 474468708476253622}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: colarbone.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,7 +852,7 @@ GameObject:
   - component: {fileID: 8495891473540031696}
   - component: {fileID: 7555802442743567488}
   - component: {fileID: 6785037773706350041}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: femur.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -980,7 +980,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5195018690931567070}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: forearm.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1014,7 +1014,7 @@ GameObject:
   - component: {fileID: 3552783325590467466}
   - component: {fileID: 1065779247853276268}
   - component: {fileID: 352551522653744328}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: arm.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1142,7 +1142,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3867189329160670608}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: femur.L.002_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1176,7 +1176,7 @@ GameObject:
   - component: {fileID: 6609641003814128904}
   - component: {fileID: 4653786930929715202}
   - component: {fileID: 328984149058866688}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1308,7 +1308,7 @@ GameObject:
   - component: {fileID: 1837535754688832357}
   - component: {fileID: 396214909263793084}
   - component: {fileID: 4688763869625123625}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BigGuyAnim_v3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1452,7 +1452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6043788466425732527}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spine.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1486,7 +1486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8642881147340473139}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: forearm.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1519,7 +1519,7 @@ GameObject:
   - component: {fileID: 6228309508478807444}
   - component: {fileID: 1244119534235636868}
   - component: {fileID: 4687869807175226171}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1649,7 +1649,7 @@ GameObject:
   - component: {fileID: 5017960740229803205}
   - component: {fileID: 6601413024049116505}
   - component: {fileID: 3777920231993125603}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: femur.L.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1777,7 +1777,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5334908348463450087}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1812,7 +1812,7 @@ GameObject:
   - component: {fileID: 8125640758237822468}
   - component: {fileID: 6992337921933623893}
   - component: {fileID: 5968734616756597634}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: forearm.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1943,7 +1943,7 @@ GameObject:
   - component: {fileID: 7972425198200405294}
   - component: {fileID: 9202532144486960387}
   - component: {fileID: 135527311808090752}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: spine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
