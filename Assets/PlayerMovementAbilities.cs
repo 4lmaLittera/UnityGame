@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -5,6 +6,13 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovementAbilities : MonoBehaviour
 {
+    #region Events
+    /// <summary>
+    /// Fired when the player lands. Passes the vertical velocity just before impact.
+    /// </summary>
+    public event Action<float> OnLandedEvent;
+    #endregion
+
     #region Serialized Fields
     [Header("Jump Settings")]
     [FormerlySerializedAs("jumpForce")]
@@ -31,6 +39,7 @@ public class PlayerMovementAbilities : MonoBehaviour
     #region Private Fields
     private Rigidbody _rb;
     private bool _wasGrounded;
+    private float _lastVerticalVelocity;
     private Coroutine _frictionCoroutine;
     #endregion
 
@@ -69,9 +78,13 @@ public class PlayerMovementAbilities : MonoBehaviour
         if (IsGrounded && !_wasGrounded)
         {
             OnLand();
+            OnLandedEvent?.Invoke(_lastVerticalVelocity);
         }
 
         _wasGrounded = IsGrounded;
+        
+        // Track this so we know how fast we were falling next frame if we hit the ground
+        _lastVerticalVelocity = _rb.linearVelocity.y;
     }
 
     // Professional Debugging: See the ray in the Scene View

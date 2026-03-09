@@ -181,8 +181,8 @@ MonoBehaviour:
   _isHomingEnabled: 1
   _turnSpeed: 3
   _detectionRadius: 8
-  _maxHomingAngle: 40
+  _maxHomingAngle: 20
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
-  _delayBeforeHoming: 0.1
+  _delayBeforeHoming: 0.05
