@@ -28,6 +28,7 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
     private NavMeshAgent _navMeshAgent;
     private float _baseSpeed;
     private bool _canUseWaterTag;
+    private int _waterAreaIndex = -1;
     #endregion
 
     #region Unity Lifecycle
@@ -50,11 +51,11 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
         {
             _baseSpeed = _navMeshAgent.speed;
             
-            int waterArea = NavMesh.GetAreaFromName("Water");
-            if (waterArea >= 0)
+            _waterAreaIndex = NavMesh.GetAreaFromName("Water");
+            if (_waterAreaIndex >= 0)
             {
                 // Ensure we CAN walk on the water area
-                _navMeshAgent.areaMask |= (1 << waterArea);
+                _navMeshAgent.areaMask |= (1 << _waterAreaIndex);
             }
         }
 
@@ -115,14 +116,26 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
 
     private bool IsStandingInWater()
     {
-        Vector3 rayOrigin = transform.position + Vector3.up * 1f;
-        // Use collide to detect triggers or specific water volumes
-        if (!TryGetSurfaceBelow(rayOrigin, _waterCheckDistance, ~0, QueryTriggerInteraction.Collide, transform, out RaycastHit hit))
+        // Primary method: Check NavMesh Area (Supports NavMeshModifier)
+        if (_navMeshAgent != null && _navMeshAgent.isOnNavMesh)
         {
-            return false;
+            if (NavMesh.SamplePosition(_navMeshAgent.transform.position, out NavMeshHit navHit, 0.5f, NavMesh.AllAreas))
+            {
+                if (_waterAreaIndex != -1 && (navHit.mask & (1 << _waterAreaIndex)) != 0)
+                {
+                    return true;
+                }
+            }
         }
 
-        return IsWaterCollider(hit.collider);
+        // Secondary fallback: Physics Raycast (for triggers or non-baked water)
+        Vector3 rayOrigin = transform.position + Vector3.up * 1f;
+        if (TryGetSurfaceBelow(rayOrigin, _waterCheckDistance, ~0, QueryTriggerInteraction.Collide, transform, out RaycastHit hit))
+        {
+            return IsWaterCollider(hit.collider);
+        }
+
+        return false;
     }
 
     private bool TryGetChaseTarget(out Vector3 chaseTarget)
