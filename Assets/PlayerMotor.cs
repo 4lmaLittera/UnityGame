@@ -46,6 +46,15 @@ public class PlayerMotor : MonoBehaviour
 
     #region Public Methods
     /// <summary>
+    /// Applies an instantaneous force to the player (e.g., from damage).
+    /// </summary>
+    public void ApplyKnockback(Vector3 force)
+    {
+        // 2026 Standard: use ForceMode.Impulse for immediate response
+        _rb.AddForce(force, ForceMode.Impulse);
+    }
+
+    /// <summary>
     /// Called by PlayerInputHandler to move the player.
     /// </summary>
     public void ProcessMove(Vector2 input)

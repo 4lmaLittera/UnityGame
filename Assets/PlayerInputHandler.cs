@@ -8,7 +8,9 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerMovementAbilities _abilities;
     private GrapplingHook _grapplingHook;
     private ThrowingSystem _throwingSystem;
+    private PlayerHealth _health;
     private Vector2 _moveInput;
+    private bool _isDead = false;
     #endregion
 
     #region Properties
@@ -22,10 +24,25 @@ public class PlayerInputHandler : MonoBehaviour
         _abilities = GetComponent<PlayerMovementAbilities>();
         _grapplingHook = GetComponent<GrapplingHook>();
         _throwingSystem = GetComponent<ThrowingSystem>();
+        _health = GetComponent<PlayerHealth>();
+
+        if (_health != null)
+        {
+            _health.OnPlayerDeath += HandlePlayerDeath;
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (_health != null)
+        {
+            _health.OnPlayerDeath -= HandlePlayerDeath;
+        }
     }
 
     void FixedUpdate()
     {
+        if (_isDead) return;
         _motor.ProcessMove(_moveInput);
     }
     #endregion
@@ -33,11 +50,17 @@ public class PlayerInputHandler : MonoBehaviour
     #region Input Handlers
     public void OnMove(InputValue value)
     {
+        if (_isDead)
+        {
+            _moveInput = Vector2.zero;
+            return;
+        }
         _moveInput = value.Get<Vector2>();
     }
 
     public void OnJump(InputValue value)
     {
+        if (_isDead) return;
         if (value.isPressed)
         {
             _abilities.ExecuteJump();
@@ -47,6 +70,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnGrapple(InputValue value)
     {
+        if (_isDead) return;
         if (value.isPressed)
         {
             _grapplingHook.StartGrapple();
@@ -59,6 +83,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnAttack(InputValue value)
     {
+        if (_isDead) return;
         if (value.isPressed && _throwingSystem != null)
         {
             _throwingSystem.ThrowPrimary();
@@ -67,10 +92,22 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnSecondaryAttack(InputValue value)
     {
+        if (_isDead) return;
         if (value.isPressed && _throwingSystem != null)
         {
             _throwingSystem.ThrowSecondary();
         }
+    }
+    #endregion
+
+    #region Private Methods
+    private void HandlePlayerDeath()
+    {
+        _isDead = true;
+        _moveInput = Vector2.zero;
+        
+        // Stop any active abilities
+        if (_grapplingHook != null) _grapplingHook.StopGrapple();
     }
     #endregion
 }
