@@ -1343,7 +1343,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4bdf56488ff134258b00ce708bd390dc, type: 3}
   m_Controller: {fileID: 9100000, guid: fcecc921394c54ee0b2a7edb477b95c9, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -1385,14 +1385,13 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  _forbiddenSurfaceLayers:
+  _waterLayers:
     serializedVersion: 2
     m_Bits: 16
-  _forbiddenSurfaceTag: Water
+  _waterTag: Water
+  _waterSpeedMultiplier: 0.4
   _waterCheckDistance: 3
-  _dryRecoveryRadius: 12
-  _playerSurfaceProbeHeight: 2
-  _playerSurfaceProbeDistance: 8
+  _navMeshSampleRadius: 12
 --- !u!54 &1837535754688832357
 Rigidbody:
   m_ObjectHideFlags: 0
