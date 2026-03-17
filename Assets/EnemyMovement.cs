@@ -15,21 +15,19 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
     [Tooltip("Layer(s) that count as ground for slope snapping. Must match your terrain/floor layer.")]
     [SerializeField] private LayerMask _groundLayer = ~0;
 
-    [Header("Water Avoidance")]
-    [Tooltip("Layer(s) that enemies should not stand on, e.g. Water")]
-    [SerializeField] private LayerMask _forbiddenSurfaceLayers;
-    [SerializeField] private string _forbiddenSurfaceTag = "Water";
+    [Header("Water Interaction")]
+    [Tooltip("Layer(s) that count as water for slowing down.")]
+    [SerializeField] private LayerMask _waterLayers;
+    [SerializeField] private string _waterTag = "Water";
+    [SerializeField] private float _waterSpeedMultiplier = 0.4f;
     [SerializeField] private float _waterCheckDistance = 3f;
-    [SerializeField] private float _dryRecoveryRadius = 12f;
-    [SerializeField] private float _playerSurfaceProbeHeight = 2f;
-    [SerializeField] private float _playerSurfaceProbeDistance = 8f;
+    [SerializeField] private float _navMeshSampleRadius = 12f;
     #endregion
 
     #region Private Fields
     private NavMeshAgent _navMeshAgent;
-    private bool _canUseForbiddenSurfaceTag;
-    private bool _hasLastKnownDryPlayerPosition;
-    private Vector3 _lastKnownDryPlayerPosition;
+    private float _baseSpeed;
+    private bool _canUseWaterTag;
     #endregion
 
     #region Unity Lifecycle
@@ -50,34 +48,35 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
 
         if (_navMeshAgent != null)
         {
+            _baseSpeed = _navMeshAgent.speed;
+            
             int waterArea = NavMesh.GetAreaFromName("Water");
             if (waterArea >= 0)
             {
-                _navMeshAgent.areaMask &= ~(1 << waterArea);
+                // Ensure we CAN walk on the water area
+                _navMeshAgent.areaMask |= (1 << waterArea);
             }
         }
 
-        if (_forbiddenSurfaceLayers.value == 0)
+        if (_waterLayers.value == 0)
         {
             int waterLayer = LayerMask.NameToLayer("Water");
             if (waterLayer >= 0)
             {
-                _forbiddenSurfaceLayers = 1 << waterLayer;
+                _waterLayers = 1 << waterLayer;
             }
         }
 
-        _canUseForbiddenSurfaceTag = IsTagDefined(_forbiddenSurfaceTag);
+        _canUseWaterTag = IsTagDefined(_waterTag);
     }
 
     void Update()
     {
         if (_player != null && _navMeshAgent != null && _navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh)
         {
-            if (IsStandingOnForbiddenSurface())
-            {
-                TrySetDryEscapeDestination();
-                return;
-            }
+            // Apply speed reduction in water
+            bool inWater = IsStandingInWater();
+            _navMeshAgent.speed = inWater ? _baseSpeed * _waterSpeedMultiplier : _baseSpeed;
 
             Vector3 chaseTarget;
             if (TryGetChaseTarget(out chaseTarget))
@@ -96,23 +95,17 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
                 _navMeshAgent.ResetPath();
             }
 
-            // Prevent stepping into forbidden surfaces (water) at the edge.
-            if (WillStepIntoForbiddenSurface())
-            {
-                _navMeshAgent.ResetPath();
-                return;
-            }
-
             SnapToGroundSurface();
         }
     }
 
-    // The NavMeshAgent interpolates height linearly across nav triangles, which diverges
-    // from curved or detailed slope geometry. This corrects vertical clipping each frame.
+    /// <summary>
+    /// Corrects vertical clipping by snapping the agent to the actual ground geometry.
+    /// </summary>
     private void SnapToGroundSurface()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
-        if (TryGetSurfaceBelow(rayOrigin, 2f, _groundLayer, QueryTriggerInteraction.Ignore, transform, out RaycastHit hit) && !IsForbiddenCollider(hit.collider))
+        if (TryGetSurfaceBelow(rayOrigin, 2f, _groundLayer, QueryTriggerInteraction.Ignore, transform, out RaycastHit hit) && !IsWaterCollider(hit.collider))
         {
             Vector3 corrected = _navMeshAgent.nextPosition;
             corrected.y = hit.point.y;
@@ -120,15 +113,16 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
         }
     }
 
-    private bool IsStandingOnForbiddenSurface()
+    private bool IsStandingInWater()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 1f;
+        // Use collide to detect triggers or specific water volumes
         if (!TryGetSurfaceBelow(rayOrigin, _waterCheckDistance, ~0, QueryTriggerInteraction.Collide, transform, out RaycastHit hit))
         {
             return false;
         }
 
-        return IsForbiddenCollider(hit.collider);
+        return IsWaterCollider(hit.collider);
     }
 
     private bool TryGetChaseTarget(out Vector3 chaseTarget)
@@ -139,99 +133,24 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
             return false;
         }
 
-        if (!IsTransformOverForbiddenSurface(_player, _playerSurfaceProbeHeight, _playerSurfaceProbeDistance))
+        // Always sample the closest valid point to the player on the NavMesh.
+        if (NavMesh.SamplePosition(_player.position, out NavMeshHit hit, _navMeshSampleRadius, NavMesh.AllAreas))
         {
-            if (NavMesh.SamplePosition(_player.position, out NavMeshHit dryPlayerHit, _dryRecoveryRadius, NavMesh.AllAreas)
-                && !IsForbiddenSurfacePoint(dryPlayerHit.position))
-            {
-                _lastKnownDryPlayerPosition = dryPlayerHit.position;
-                _hasLastKnownDryPlayerPosition = true;
-                chaseTarget = _lastKnownDryPlayerPosition;
-                return true;
-            }
-        }
-
-        if (_hasLastKnownDryPlayerPosition)
-        {
-            chaseTarget = _lastKnownDryPlayerPosition;
+            chaseTarget = hit.position;
             return true;
         }
 
         return false;
     }
 
-    private bool IsTransformOverForbiddenSurface(Transform target, float probeHeight, float probeDistance)
+    private bool IsWaterCollider(Collider col)
     {
-        if (target == null)
-        {
-            return false;
-        }
+        if (col == null) return false;
 
-        Vector3 rayOrigin = target.position + Vector3.up * probeHeight;
-        if (!TryGetSurfaceBelow(rayOrigin, probeDistance, ~0, QueryTriggerInteraction.Collide, target, out RaycastHit hit))
-        {
-            return false;
-        }
+        bool inWaterLayer = (_waterLayers.value & (1 << col.gameObject.layer)) != 0;
+        bool hasWaterTag = _canUseWaterTag && col.CompareTag(_waterTag);
 
-        return IsForbiddenCollider(hit.collider);
-    }
-
-    private bool IsForbiddenCollider(Collider col)
-    {
-        if (col == null)
-        {
-            return false;
-        }
-
-        bool blockedByLayer = (_forbiddenSurfaceLayers.value & (1 << col.gameObject.layer)) != 0;
-        bool blockedByTag = _canUseForbiddenSurfaceTag && col.CompareTag(_forbiddenSurfaceTag);
-
-        return blockedByLayer || blockedByTag;
-    }
-
-    private bool WillStepIntoForbiddenSurface()
-    {
-        Vector3 desiredVelocity = _navMeshAgent.desiredVelocity;
-        if (desiredVelocity.sqrMagnitude < 0.001f)
-        {
-            return false;
-        }
-
-        float lookAhead = Mathf.Max(_navMeshAgent.radius * 1.2f, 0.7f);
-        Vector3 forwardCheck = transform.position + desiredVelocity.normalized * lookAhead;
-        return IsForbiddenSurfacePoint(forwardCheck);
-    }
-
-    private void TrySetDryEscapeDestination()
-    {
-        Vector3 center = transform.position;
-        const int attempts = 12;
-
-        for (int i = 0; i < attempts; i++)
-        {
-            Vector2 offset2D = Random.insideUnitCircle * _dryRecoveryRadius;
-            Vector3 candidate = center + new Vector3(offset2D.x, 0f, offset2D.y);
-
-            if (NavMesh.SamplePosition(candidate, out NavMeshHit navHit, _dryRecoveryRadius, NavMesh.AllAreas) && !IsForbiddenSurfacePoint(navHit.position))
-            {
-                _navMeshAgent.SetDestination(navHit.position);
-                return;
-            }
-        }
-
-        // If no dry point is found, stop movement to prevent jitter.
-        _navMeshAgent.ResetPath();
-    }
-
-    private bool IsForbiddenSurfacePoint(Vector3 point)
-    {
-        Vector3 probeStart = point + Vector3.up * 2f;
-        if (!TryGetSurfaceBelow(probeStart, 6f, ~0, QueryTriggerInteraction.Collide, null, out RaycastHit hit))
-        {
-            return false;
-        }
-
-        return IsForbiddenCollider(hit.collider);
+        return inWaterLayer || hasWaterTag;
     }
 
     private bool TryGetSurfaceBelow(Vector3 origin, float maxDistance, LayerMask layers, QueryTriggerInteraction triggerInteraction, Transform ignoredRoot, out RaycastHit selectedHit)
@@ -248,15 +167,9 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
         for (int i = 0; i < hits.Length; i++)
         {
             Collider col = hits[i].collider;
-            if (col == null)
-            {
-                continue;
-            }
+            if (col == null) continue;
 
-            if (ignoredRoot != null && col.transform.IsChildOf(ignoredRoot))
-            {
-                continue;
-            }
+            if (ignoredRoot != null && col.transform.IsChildOf(ignoredRoot)) continue;
 
             selectedHit = hits[i];
             return true;
@@ -265,7 +178,6 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
         selectedHit = default;
         return false;
     }
-
     #endregion
 
     #region IPoolableEnemy Implementation
@@ -274,7 +186,6 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
         if (_navMeshAgent != null)
         {
             ApplyRandomAvoidancePriority();
-            _hasLastKnownDryPlayerPosition = false;
 
             // Warp is essential to prevent the agent from trying to walk from its dead body location to the new spawn point
             _navMeshAgent.Warp(transform.position);
@@ -293,16 +204,11 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
         {
             _navMeshAgent.ResetPath();
         }
-
-        _hasLastKnownDryPlayerPosition = false;
     }
 
     private void ApplyRandomAvoidancePriority()
     {
-        if (_navMeshAgent == null)
-        {
-            return;
-        }
+        if (_navMeshAgent == null) return;
 
         int minPriority = Mathf.Clamp(Mathf.Min(_avoidancePriorityRange.x, _avoidancePriorityRange.y), 0, 99);
         int maxPriority = Mathf.Clamp(Mathf.Max(_avoidancePriorityRange.x, _avoidancePriorityRange.y), 0, 99);
@@ -312,13 +218,11 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
 
     private bool IsTagDefined(string tagName)
     {
-        if (string.IsNullOrEmpty(tagName))
-        {
-            return false;
-        }
+        if (string.IsNullOrEmpty(tagName)) return false;
 
         try
         {
+            // This is a common way to check if a tag exists in Unity
             GameObject.FindWithTag(tagName);
             return true;
         }
@@ -326,6 +230,14 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
         {
             return false;
         }
+    }
+    #endregion
+
+    #region Debug
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _waterCheckDistance);
     }
     #endregion
 }
