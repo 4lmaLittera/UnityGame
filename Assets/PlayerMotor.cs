@@ -53,14 +53,20 @@ public class PlayerMotor : MonoBehaviour
         // 1. Calculate direction based on player's orientation
         Vector3 moveDir = (transform.right * input.x + transform.forward * input.y).normalized;
 
-        // 2. Determine how much power we have based on ground state
+        // 2. Project movement along the slope surface so the player walks up/down hills
+        if (_abilities.IsGrounded)
+        {
+            moveDir = Vector3.ProjectOnPlane(moveDir, _abilities.SlopeNormal).normalized;
+        }
+
+        // 3. Determine how much power we have based on ground state
         float currentForce = _abilities.IsGrounded ? _pushForce : _pushForce * _airControlMultiplier;
 
-        // 3. Isolate horizontal velocity to check against Max Speed
-        Vector3 horizontalVel = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
+        // 4. Measure speed along the slope surface (not just horizontal) to respect max speed on slopes
+        Vector3 flatVel = Vector3.ProjectOnPlane(_rb.linearVelocity, _abilities.SlopeNormal);
 
-        // 4. Only apply force if we are under the speed limit OR trying to turn around
-        if (horizontalVel.magnitude < _maxSpeed || Vector3.Dot(moveDir, horizontalVel) < 0)
+        // 5. Only apply force if we are under the speed limit OR trying to turn around
+        if (flatVel.magnitude < _maxSpeed || Vector3.Dot(moveDir, flatVel) < 0)
         {
             _rb.AddForce(moveDir * currentForce, ForceMode.Acceleration);
         }
