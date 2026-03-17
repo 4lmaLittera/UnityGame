@@ -20,6 +20,15 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float _defaultThrowForce = 25f;
     [SerializeField] private float _defaultUpwardForce = 5f;
     [SerializeField] private float _defaultThrowCooldown = 0.5f;
+
+    [Header("Throw Audio")]
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _primaryThrowClip;
+    [SerializeField] private AudioClip _secondaryThrowClip;
+    [Range(0f, 1f)]
+    [SerializeField] private float _primaryThrowVolume = 1f;
+    [Range(0f, 1f)]
+    [SerializeField] private float _secondaryThrowVolume = 1f;
     #endregion
 
     #region Private Fields
@@ -55,6 +64,7 @@ public class ThrowingSystem : MonoBehaviour
     void Awake()
     {
         _playerCollider = GetComponent<Collider>();
+        if (_audioSource == null) _audioSource = GetComponent<AudioSource>();
     }
     #endregion
 
@@ -70,6 +80,7 @@ public class ThrowingSystem : MonoBehaviour
         _lastPrimaryCooldown = cooldown;
         _primaryNextThrowTime = Time.time + cooldown;
 
+        PlayThrowSound(_primaryThrowClip, _primaryThrowVolume);
         ThrowWeapon(_primaryWeaponPrefab);
     }
 
@@ -84,7 +95,14 @@ public class ThrowingSystem : MonoBehaviour
         _lastSecondaryCooldown = cooldown;
         _secondaryNextThrowTime = Time.time + cooldown;
 
+        PlayThrowSound(_secondaryThrowClip, _secondaryThrowVolume);
         ThrowWeapon(_secondaryWeaponPrefab);
+    }
+
+    private void PlayThrowSound(AudioClip clip, float volume)
+    {
+        if (_audioSource == null || clip == null) return;
+        _audioSource.PlayOneShot(clip, volume);
     }
 
     private float GetWeaponCooldown(GameObject prefab)

@@ -34,6 +34,12 @@ public class PlayerMovementAbilities : MonoBehaviour
     
     [FormerlySerializedAs("frictionRestoreSpeed")]
     [SerializeField] private float _frictionRestoreSpeed = 0.2f;
+
+    [Header("Jump Audio")]
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _jumpClip;
+    [Range(0f, 1f)]
+    [SerializeField] private float _jumpVolume = 0.9f;
     #endregion
 
     #region Private Fields
@@ -54,6 +60,7 @@ public class PlayerMovementAbilities : MonoBehaviour
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        if (_audioSource == null) _audioSource = GetComponent<AudioSource>();
 
         // IMPORTANT: Instance the material so we don't modify the Project Asset.
         if (_feetMaterial != null)
@@ -110,6 +117,11 @@ public class PlayerMovementAbilities : MonoBehaviour
             // 2026 Standard: use linearVelocity instead of velocity
             _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
             _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+
+            if (_audioSource != null && _jumpClip != null)
+            {
+                _audioSource.PlayOneShot(_jumpClip, _jumpVolume);
+            }
         }
     }
     #endregion
