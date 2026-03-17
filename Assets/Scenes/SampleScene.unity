@@ -9731,7 +9731,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6090587832199745919, guid: 94ec53e70dc2445108b7f6ed9e2dee9c, type: 3}
       propertyPath: m_Radius
-      value: 0.55
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6090587832199745919, guid: 94ec53e70dc2445108b7f6ed9e2dee9c, type: 3}
+      propertyPath: m_Center.y
+      value: -0.64
       objectReference: {fileID: 0}
     - target: {fileID: 6658914047861420229, guid: 94ec53e70dc2445108b7f6ed9e2dee9c, type: 3}
       propertyPath: _sensitivity
