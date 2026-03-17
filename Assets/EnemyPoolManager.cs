@@ -27,6 +27,14 @@ public class EnemyPoolManager : MonoBehaviour
     [Header("NavMesh Settings")]
     [Tooltip("How far off the radial point we search for a valid NavMesh point")]
     [SerializeField] private float _navMeshSearchDistance = 5f;
+
+    [Header("Spawn Surface Filters")]
+    [Tooltip("Layer(s) that enemies should never spawn on, e.g. Water")]
+    [SerializeField] private LayerMask _forbiddenSpawnLayers;
+    [Tooltip("Tag that enemies should never spawn on")]
+    [SerializeField] private string _forbiddenSpawnTag = "Water";
+    [SerializeField] private float _surfaceProbeHeight = 2f;
+    [SerializeField] private float _surfaceProbeDistance = 8f;
     #endregion
 
     #region Private Fields
@@ -34,6 +42,7 @@ public class EnemyPoolManager : MonoBehaviour
     private Dictionary<GameObject, List<GameObject>> _pools = new();
     private float _totalSpawnWeight;
     private float _nextSpawnTime;
+    private bool _canUseForbiddenTag;
     #endregion
 
     #region Unity Lifecycle
@@ -44,6 +53,22 @@ public class EnemyPoolManager : MonoBehaviour
             var playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null) _player = playerObj.transform;
             else Debug.LogError("EnemyPoolManager: No Player found!");
+        }
+
+        // Auto-include a "Water" layer when available and no mask was configured.
+        if (_forbiddenSpawnLayers.value == 0)
+        {
+            int waterLayer = LayerMask.NameToLayer("Water");
+            if (waterLayer >= 0)
+            {
+                _forbiddenSpawnLayers = 1 << waterLayer;
+            }
+        }
+
+        _canUseForbiddenTag = IsTagDefined(_forbiddenSpawnTag);
+        if (!_canUseForbiddenTag && !string.IsNullOrEmpty(_forbiddenSpawnTag))
+        {
+            Debug.LogWarning($"EnemyPoolManager: Forbidden spawn tag '{_forbiddenSpawnTag}' is not defined. Tag filtering is disabled.");
         }
 
         InitializePool();
@@ -167,6 +192,25 @@ public class EnemyPoolManager : MonoBehaviour
         // 3. Ensure the point is on the NavMesh so the agent doesn't break
         if (NavMesh.SamplePosition(targetSpawnPoint, out NavMeshHit hit, _navMeshSearchDistance, NavMesh.AllAreas))
         {
+            if (IsForbiddenSpawnSurface(hit.position))
+            {
+                return;
+            }
+
+            // 4. Verify the 3D volume at that point is clear of geometry before placing.
+            //    NavMesh.SamplePosition only checks the surface, not the space above it.
+            NavMeshAgent agentComp = enemy.GetComponent<NavMeshAgent>();
+            float agentRadius = agentComp != null ? agentComp.radius : 0.5f;
+            float agentHeight = agentComp != null ? agentComp.height : 2f;
+            Vector3 capsuleBottom = hit.position + Vector3.up * agentRadius;
+            Vector3 capsuleTop    = hit.position + Vector3.up * (agentHeight - agentRadius);
+
+            if (Physics.CheckCapsule(capsuleBottom, capsuleTop, agentRadius * 0.9f))
+            {
+                // Spawn point is blocked by geometry — skip and retry next interval.
+                return;
+            }
+
             // Move it exactly to the valid NavMesh point
             enemy.transform.position = hit.position;
             
@@ -184,6 +228,38 @@ public class EnemyPoolManager : MonoBehaviour
         {
             // The calculated radial point was too far from a walkable surface (e.g. inside a mountain)
             // We skip this spawn frame to keep performance high, it will try again next interval.
+        }
+    }
+
+    private bool IsForbiddenSpawnSurface(Vector3 navMeshPoint)
+    {
+        Vector3 probeStart = navMeshPoint + Vector3.up * _surfaceProbeHeight;
+        if (!Physics.Raycast(probeStart, Vector3.down, out RaycastHit hitInfo, _surfaceProbeDistance, ~0, QueryTriggerInteraction.Collide))
+        {
+            return false;
+        }
+
+        bool blockedByLayer = (_forbiddenSpawnLayers.value & (1 << hitInfo.collider.gameObject.layer)) != 0;
+        bool blockedByTag = _canUseForbiddenTag && hitInfo.collider.CompareTag(_forbiddenSpawnTag);
+
+        return blockedByLayer || blockedByTag;
+    }
+
+    private bool IsTagDefined(string tagName)
+    {
+        if (string.IsNullOrEmpty(tagName))
+        {
+            return false;
+        }
+
+        try
+        {
+            GameObject.FindWithTag(tagName);
+            return true;
+        }
+        catch (UnityException)
+        {
+            return false;
         }
     }
 
