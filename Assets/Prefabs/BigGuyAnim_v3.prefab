@@ -1325,7 +1325,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 19.922733, y: 0.5, z: -3.5955667}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2210728378330769007}
@@ -1381,6 +1381,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   _player: {fileID: 0}
+  _avoidancePriorityRange: {x: 20, y: 80}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _forbiddenSurfaceLayers:
+    serializedVersion: 2
+    m_Bits: 16
+  _forbiddenSurfaceTag: Water
+  _waterCheckDistance: 3
+  _dryRecoveryRadius: 12
 --- !u!54 &1837535754688832357
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1418,11 +1428,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.6
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

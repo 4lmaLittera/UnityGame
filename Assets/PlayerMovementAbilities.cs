@@ -47,6 +47,7 @@ public class PlayerMovementAbilities : MonoBehaviour
     // Professional standard: Public property with private setter
     // This allows PlayerMotor to read the state but not change it.
     public bool IsGrounded { get; private set; }
+    public Vector3 SlopeNormal { get; private set; } = Vector3.up;
     #endregion
 
     #region Unity Lifecycle
@@ -71,8 +72,10 @@ public class PlayerMovementAbilities : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Perform the ground check
-        IsGrounded = Physics.Raycast(transform.position, Vector3.down, _rayDistance, _groundLayer);
+        // Perform the ground check and capture surface normal for slope handling
+        RaycastHit groundHit;
+        IsGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, _rayDistance, _groundLayer);
+        SlopeNormal = IsGrounded ? groundHit.normal : Vector3.up;
 
         // Detect the exact frame of landing
         if (IsGrounded && !_wasGrounded)
