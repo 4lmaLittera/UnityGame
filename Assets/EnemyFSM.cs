@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 /// <summary>
 /// A classic, simplified Finite State Machine (Baigtinės būsenos mašina) for aggressive enemies.
-/// This enemy focuses on direct pursuit and combat without complex stealth or investigation logic.
+/// This version includes Cornering Speed Control to slow down during sharp turns.
 /// </summary>
 public enum EnemyState { Idle, Chasing, Attacking, Dead }
 
@@ -25,6 +25,17 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     [Tooltip("Minimum time in seconds between starting new attacks.")]
     [SerializeField] private float _attackCooldown = 1.5f;
 
+    [Header("Cornering Settings")]
+    [Tooltip("The maximum speed when moving in a straight line.")]
+    [SerializeField] private float _maxMoveSpeed = 8f;
+    
+    [Tooltip("The speed multiplier when taking a sharp 90-degree turn.")]
+    [Range(0.1f, 1f)]
+    [SerializeField] private float _turnSpeedMultiplier = 0.4f;
+
+    [Tooltip("How quickly the speed adjusts to the required cornering speed.")]
+    [SerializeField] private float _speedAdaptationRate = 5f;
+
     [Header("References")]
     [Tooltip("The target to chase. If empty, will find object tagged 'Player'.")]
     [SerializeField] private Transform _player;
@@ -39,6 +50,7 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     #region Private Fields
     private NavMeshAgent _navMeshAgent;
     private float _nextAttackTime;
+    private float _currentSpeedTarget;
     #endregion
 
     #region Unity Lifecycle
@@ -46,6 +58,12 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         if (_animator == null) _animator = GetComponentInChildren<Animator>();
+        
+        if (_navMeshAgent != null)
+        {
+            _navMeshAgent.speed = _maxMoveSpeed;
+            _currentSpeedTarget = _maxMoveSpeed;
+        }
     }
 
     void Start()
@@ -60,17 +78,15 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     void Update()
     {
         // SAFETY: Only run logic if alive and NavMesh is valid
-        if (_currentState == EnemyState.Dead || _navMeshAgent == null || !_navMeshAgent.isActiveAndEnabled || !_navMeshAgent.isOnNavMesh)
+        if (_currentState == EnemyState.Dead || _navMeshAgent == null || !_navMeshAgent.isActiveAndEnabled || !_navMeshAgent.isOnNavMesh) 
             return;
 
+        ApplyCorneringSpeed();
         UpdateFSM();
     }
     #endregion
 
     #region FSM Logic
-    /// <summary>
-    /// Core logic for the Finite State Machine transitions.
-    /// </summary>
     private void UpdateFSM()
     {
         if (_player == null) return;
@@ -80,7 +96,6 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
         switch (_currentState)
         {
             case EnemyState.Idle:
-                // Simple transition: if player is within detection range, start chasing
                 if (distanceToPlayer <= _detectionRange)
                 {
                     _currentState = EnemyState.Chasing;
@@ -88,11 +103,9 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
                 break;
 
             case EnemyState.Chasing:
-                // Always pursue the player once detected
                 _navMeshAgent.isStopped = false;
                 _navMeshAgent.SetDestination(_player.position);
 
-                // Transition to attacking if close enough
                 if (distanceToPlayer <= _attackRange)
                 {
                     _currentState = EnemyState.Attacking;
@@ -100,20 +113,16 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
                 break;
 
             case EnemyState.Attacking:
-                // Stop moving while attacking
                 _navMeshAgent.isStopped = true;
                 _navMeshAgent.velocity = Vector3.zero;
 
-                // Face the player
                 RotateTowardsPlayer();
 
-                // Trigger attack if cooldown is ready
                 if (Time.time >= _nextAttackTime)
                 {
                     PerformAttack();
                 }
 
-                // If player moves away, return to chasing
                 if (distanceToPlayer > _attackRange)
                 {
                     _currentState = EnemyState.Chasing;
@@ -140,6 +149,38 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     }
     #endregion
 
+    #region Cornering Logic
+    /// <summary>
+    /// Checks the path ahead and reduces speed if a sharp turn is coming up.
+    /// </summary>
+    private void ApplyCorneringSpeed()
+    {
+        if (_currentState != EnemyState.Chasing) return;
+
+        float targetSpeed = _maxMoveSpeed;
+
+        // If we have a path with at least 2 points (current and next corner)
+        if (_navMeshAgent.hasPath && _navMeshAgent.path.corners.Length > 1)
+        {
+            // Vector to the immediate steering target
+            Vector3 vectorToNextCorner = (_navMeshAgent.steeringTarget - transform.position).normalized;
+            
+            // Calculate angle between our current forward and the direction we need to go
+            float angle = Vector3.Angle(transform.forward, vectorToNextCorner);
+
+            // If angle is sharp, reduce speed
+            // Example: 0 deg = 1.0x, 90 deg = _turnSpeedMultiplier, 180 deg = even slower
+            float speedFactor = Mathf.Clamp01(1f - (angle / 120f)); // Normalizes angle to 0-1 range over 120 degrees
+            
+            // Blend between slow turn speed and fast straight speed
+            targetSpeed = Mathf.Lerp(_maxMoveSpeed * _turnSpeedMultiplier, _maxMoveSpeed, speedFactor);
+        }
+
+        // Smoothly interpolate the actual agent speed to avoid jittery movement
+        _navMeshAgent.speed = Mathf.MoveTowards(_navMeshAgent.speed, targetSpeed, _speedAdaptationRate * Time.deltaTime);
+    }
+    #endregion
+
     #region IPoolableEnemy Implementation
     public void OnSpawn()
     {
@@ -148,6 +189,7 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
         {
             _navMeshAgent.isStopped = false;
             _navMeshAgent.Warp(transform.position);
+            _navMeshAgent.speed = _maxMoveSpeed;
         }
     }
 
@@ -164,18 +206,20 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     #region Debug
     private void OnDrawGizmosSelected()
     {
-        // Detection Range
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _detectionRange);
-
-        // Attack Range
+        
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _attackRange);
 
-        if (_currentState == EnemyState.Chasing && _player != null)
+        if (_navMeshAgent != null && _navMeshAgent.hasPath)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position + Vector3.up, _player.position + Vector3.up);
+            Gizmos.color = Color.blue;
+            var corners = _navMeshAgent.path.corners;
+            for (int i = 0; i < corners.Length - 1; i++)
+            {
+                Gizmos.DrawLine(corners[i], corners[i + 1]);
+            }
         }
     }
     #endregion
