@@ -1,0 +1,27 @@
+All 2D graphics in the package are my original work, and you can use them freely.
+
+All 3D models in the package are my original work, and you can use them freely.
+
+List of audio files used, which are all free licence, but not my original work:
+-------------------------------------------------------------------------------
+05_door_open_2 - Minifantasy Dungeon SFX (https://leohpaz.itch.io/minifantasy-dungeon-sfx-pack)
+06_door_close_2 - Minifantasy Dungeon SFX (https://leohpaz.itch.io/minifantasy-dungeon-sfx-pack)
+Door squeak creak 20 - Free music and SFX collection (https://gamecontentdeals.com/assets/audio/free-music-and-sfx-collection/)
+
+Per terms of Pixabay's license, the following audio files have been significantly modified (meaning it is OK to use & distribute).
+----------------------------------------------------------------------------------------------------------------------------------
+Using Audacity they have been clipped, had the volume modified, pitch and / or tempo changed, or other audio processing.
+rattling-door-81387 - Pixabay (https://pixabay.com/sound-effects/rattling-door-81387/)
+garage-door-26912 - Pixabay (https://pixabay.com/sound-effects/garage-door-26912/)
+door-lock-98655 - Pixabay (https://pixabay.com/sound-effects/door-lock-98655/)
+key-twist-in-lock-47832 - Pixabay (https://pixabay.com/sound-effects/key-twist-in-lock-47832/)
+fence-rattle-1-front-105759 - Pixabay (https://pixabay.com/sound-effects/fence-rattle-1-front-105759/)
+fence-gate-slammed-227012 - Pixabay (https://pixabay.com/sound-effects/fence-gate-slammed-227012/)
+unlocking-metal-door-44281 - Pixabay (https://pixabay.com/sound-effects/unlocking-metal-door-44281/)
+rolling-suitcase-5-44705 - Pixabay (https://pixabay.com/sound-effects/rolling-suitcase-5-44705/)
+plastic-cd-case-opening-and-closing-104083 - Pixabay (https://pixabay.com/sound-effects/plastic-cd-case-opening-and-closing-104083/)
+door-creak-28759 - Pixabay (https://pixabay.com/sound-effects/door-creak-28759/)
+large-metal-lift-door-openingwav-14459 - Pixabay (https://pixabay.com/sound-effects/large-metal-lift-door-openingwav-14459/)
+servo-2-panera-25665 - Pixabay (https://pixabay.com/sound-effects/servo-2-panera-25665/)
+liftservo-77999 - Pixabay (https://pixabay.com/sound-effects/liftservo-77999/)
+barn-wooden-sliding-door-308389 - Pixabay (https://pixabay.com/sound-effects/barn-wooden-sliding-door-308389/)

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 39212212c69bc1241b33803f1958dc6c
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318975
+  packageName: OmniDoor3D
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/OmniDoor3D/Scripts/Editor/OmniDoor3DInspector.cs
+  uploadId: 756516

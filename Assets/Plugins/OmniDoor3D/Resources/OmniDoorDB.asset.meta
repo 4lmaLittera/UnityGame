@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: da8bf869f897c0d42ac136f1fcc76dea
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318975
+  packageName: OmniDoor3D
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/OmniDoor3D/Resources/OmniDoorDB.asset
+  uploadId: 756516

@@ -21,8 +21,6 @@ GameObject:
   - component: {fileID: 4885056226105011744}
   - component: {fileID: 919924620872764575}
   - component: {fileID: 4316754171574768418}
-  - component: {fileID: 2461737379839821086}
-  - component: {fileID: 5116754911540042025}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -173,8 +171,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: -0.53, z: 0}
+  m_Radius: 0.4
+  m_Center: {x: 0, y: -0.64, z: 0}
 --- !u!114 &3778986806470772171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,15 +188,16 @@ MonoBehaviour:
   _pushForce: 30
   _maxSpeed: 10
   _airControlMultiplier: 0.3
-  _audioSource: {fileID: 0}
+  _audioSource: {fileID: 4316754171574768418}
   _cameraEffects: {fileID: 0}
-  _footstepClips: []
+  _footstepClips:
+  - {fileID: 8300000, guid: 10a9406e8e85a8c47bbe8f027cb1d54d, type: 3}
   _fallbackFootstepInterval: 0.45
   _footstepCadenceMultiplier: 1
   _minFootstepInterval: 0.12
   _maxFootstepInterval: 0.65
   _minFootstepSpeed: 1
-  _footstepVolume: 0.7
+  _footstepVolume: 0.51
 --- !u!114 &4348351684679206556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,9 +218,9 @@ MonoBehaviour:
   _feetMaterial: {fileID: 13400000, guid: 9655d6346aff843328cf29cedad49f26, type: 2}
   _targetFriction: 1.5
   _frictionRestoreSpeed: 0.2
-  _audioSource: {fileID: 0}
-  _jumpClip: {fileID: 0}
-  _jumpVolume: 0.9
+  _audioSource: {fileID: 4316754171574768418}
+  _jumpClip: {fileID: 8300000, guid: af9e349592c8cc1469e8f6cfa9725379, type: 3}
+  _jumpVolume: 0.668
 --- !u!114 &3519013022455407339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,14 +283,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _maxDistance: 100
-  _jointSpring: 15
-  _jointDamper: 10
+  _jointSpring: 10
+  _jointDamper: 20
   _jointMassScale: 4.5
   _velocityPushMultiplier: 0.5
   _maxReleasePush: 20
   _minReleasePush: 3
-  _lookDirectionWeight: 0.5
-  _releaseUpwardBoost: 2
+  _lookDirectionWeight: 0.3
+  _releaseUpwardBoost: 3
 --- !u!114 &919924620872764575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,16 +303,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b87cb8f8e24744a929367be2703d6dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _primaryWeaponPrefab: {fileID: 0}
-  _secondaryWeaponPrefab: {fileID: 0}
+  _primaryWeaponPrefab: {fileID: 5179299443756984312, guid: bfde37c4d9c53415ea8517cbedcbec00, type: 3}
+  _secondaryWeaponPrefab: {fileID: 8398251629471199887, guid: a0b8bf5a536494833bec0b96884b8bc3, type: 3}
   _throwPoint: {fileID: 4136256047033970733}
   _maxActiveProjectiles: 10
   _defaultThrowForce: 5
   _defaultUpwardForce: 2
   _defaultThrowCooldown: 0.5
-  _audioSource: {fileID: 0}
-  _primaryThrowClip: {fileID: 0}
-  _secondaryThrowClip: {fileID: 0}
+  _audioSource: {fileID: 4316754171574768418}
+  _primaryThrowClip: {fileID: 8300000, guid: 6270211175ea3904abe13cf06666f590, type: 3}
+  _secondaryThrowClip: {fileID: 8300000, guid: 3aa9421dd92161b478bb3b37acb69107, type: 3}
   _primaryThrowVolume: 1
   _secondaryThrowVolume: 1
 --- !u!82 &4316754171574768418
@@ -553,7 +552,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -975,7 +974,7 @@ GameObject:
   - component: {fileID: 6658914047861420229}
   m_Layer: 0
   m_Name: CameraHolder
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1010,5 +1009,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc105bc7fb792441b8d6508037f84c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _sensitivity: 10
+  _sensitivity: 25
   _playerBody: {fileID: 3868924760256742309}

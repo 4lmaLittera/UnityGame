@@ -282,7 +282,6 @@ GameObject:
   - component: {fileID: 2787319683847996446}
   - component: {fileID: 7499147153763117046}
   - component: {fileID: 4207926366763147868}
-  - component: {fileID: 3066331429892733727}
   m_Layer: 3
   m_Name: Rock_Big_01
   m_TagString: Untagged
@@ -366,30 +365,10 @@ NavMeshObstacle:
   m_GameObject: {fileID: 7763998473040964053}
   m_Enabled: 1
   serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 4, y: 2.5, z: 4}
+  m_Shape: 0
+  m_Extents: {x: 4.77, y: 1, z: 4.77}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &3066331429892733727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7763998473040964053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
-  m_SerializedVersion: 0
-  m_OverrideArea: 1
-  m_Area: 1
-  m_OverrideGenerateLinks: 0
-  m_GenerateLinks: 0
-  m_IgnoreFromBuild: 0
-  m_ApplyToChildren: 1
-  m_AffectedAgents: 00000000

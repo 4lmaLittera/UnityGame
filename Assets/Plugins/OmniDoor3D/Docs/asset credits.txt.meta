@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 87a204061623e8b499308e730a0e4c9f
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318975
+  packageName: OmniDoor3D
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/OmniDoor3D/Docs/asset credits.txt
+  uploadId: 756516
