@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4885056226105011744}
   - component: {fileID: 919924620872764575}
   - component: {fileID: 4316754171574768418}
+  - component: {fileID: 5116754911540042025}
+  - component: {fileID: 3689892723337413132}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -198,6 +200,7 @@ MonoBehaviour:
   _maxFootstepInterval: 0.65
   _minFootstepSpeed: 1
   _footstepVolume: 0.51
+  _maxFootstepNoiseRadius: 20
 --- !u!114 &4348351684679206556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f8607c0196b49f6b282acd73e2f5f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementAbilities
+  _currentState: 0
   _jumpForce: 5
   _groundLayer:
     serializedVersion: 2
@@ -315,6 +319,7 @@ MonoBehaviour:
   _secondaryThrowClip: {fileID: 8300000, guid: 3aa9421dd92161b478bb3b37acb69107, type: 3}
   _primaryThrowVolume: 1
   _secondaryThrowVolume: 1
+  _throwNoiseRadius: 20
 --- !u!82 &4316754171574768418
 AudioSource:
   m_ObjectHideFlags: 0
@@ -412,14 +417,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!81 &2461737379839821086
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 84715864462816501}
-  m_Enabled: 1
 --- !u!114 &5116754911540042025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,9 +429,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730a2841cef5e4a5b85eb7903e586160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  _maxHealth: 60
+  _maxHealth: 30
   _invulnerable: 0
   _knockbackMultiplier: 1
+--- !u!114 &3689892723337413132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84715864462816501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc2811bfbc4764f46a97f535676fc1c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDeathManager
+  _endSceneName: End game
+  _delayBeforeTransition: 2
 --- !u!1 &659304959305824597
 GameObject:
   m_ObjectHideFlags: 0
