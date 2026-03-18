@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 143c90e39f5080042aff7ac47876ff5b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318975
+  packageName: OmniDoor3D
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/OmniDoor3D/Scripts/ScriptableObjects/OmniDoorDB.cs
+  uploadId: 756516

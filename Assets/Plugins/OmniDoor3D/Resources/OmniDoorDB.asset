@@ -1,0 +1,478 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 143c90e39f5080042aff7ac47876ff5b, type: 3}
+  m_Name: OmniDoorDB
+  m_EditorClassIdentifier: 
+  DoorList:
+  - doorKind: 0
+    doorMesh: {fileID: 4300000, guid: fb0cb7fc7fc835345839197094e6c2a1, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: 36269aad09ec6714188d7ec1886b5af1, type: 2}
+    - {fileID: 2100000, guid: b80337c3955c8e24fae393acf0b59a36, type: 2}
+    - {fileID: 2100000, guid: e89a38d39d3a2424182d434a4fe19fc1, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.5, y: 1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: -0.85, y: 1.1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 2
+      handlePosition: {x: -0.85, y: 1.1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1.2}
+  - doorKind: 1
+    doorMesh: {fileID: 4300000, guid: fb0cb7fc7fc835345839197094e6c2a1, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: db89926930db13f4db43da88e830323f, type: 2}
+    - {fileID: 2100000, guid: b80337c3955c8e24fae393acf0b59a36, type: 2}
+    - {fileID: 2100000, guid: e89a38d39d3a2424182d434a4fe19fc1, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 5359c5a94af55ef499aad95435e96746, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: fee89968e6b6ba44ea5e63c7b1325018, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.5, y: 1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: -0.85, y: 1.1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 2
+      handlePosition: {x: -0.85, y: 1.1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1.2}
+  - doorKind: 2
+    doorMesh: {fileID: 4300000, guid: 8623b162927bb7a479f4291e057757d5, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: 36269aad09ec6714188d7ec1886b5af1, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 1ba7172685707324fa83a75058c7c6d8, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 1ba7172685707324fa83a75058c7c6d8, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -2.755, y: 1.273, z: -0.058}
+      handleRotation: {x: 0, y: 0, z: 90}
+      handleScale: {x: 0.52, y: 0.68, z: 0.68}
+    - handleKind: 3
+      handlePosition: {x: -2.755, y: 1.273, z: -0.058}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1.2, y: 1.2, z: 1.2}
+    - handleKind: 2
+      handlePosition: {x: -2.755, y: 1.273, z: -0.058}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1.2, y: 1.2, z: 1.65}
+  - doorKind: 3
+    doorMesh: {fileID: 4300000, guid: ab3c75d66db0dea43a6ff3c82c0c7475, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: 9264bf59d1d51a248aab12cedaad4103, type: 2}
+    - {fileID: 2100000, guid: 99dac8160ba30014faa2fd8e3bf212dc, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 89239c078e9ef6046a5d5f537ca87311, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 09e50f3633dcf8f468a1eb2b840cc8cc, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: -0.01, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles: []
+  - doorKind: 4
+    doorMesh: {fileID: 4300000, guid: fb0cb7fc7fc835345839197094e6c2a1, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: df14b213f9c44da4288bb7b7dac16b18, type: 2}
+    - {fileID: 2100000, guid: b80337c3955c8e24fae393acf0b59a36, type: 2}
+    - {fileID: 2100000, guid: e89a38d39d3a2424182d434a4fe19fc1, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.5, y: 1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: -0.85, y: 1.1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 2
+      handlePosition: {x: -0.85, y: 1.1, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1.2}
+  - doorKind: 5
+    doorMesh: {fileID: 4300000, guid: ab3c75d66db0dea43a6ff3c82c0c7475, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: db89926930db13f4db43da88e830323f, type: 2}
+    - {fileID: 2100000, guid: 9264bf59d1d51a248aab12cedaad4103, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: d84ff98bca81893468e7140080db43a7, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 462fbeaa72c492947940d2c6e14f2374, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 0.38, z: 0.38}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -1, y: 0.8, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 2.5, z: 1}
+  - doorKind: 6
+    doorMesh: {fileID: 4300000, guid: ea7dab337ee203744abf118b3b1c88a6, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: d363ab1d119bd524184dc21859e09274, type: 2}
+    - {fileID: 2100000, guid: db89926930db13f4db43da88e830323f, type: 2}
+    - {fileID: 2100000, guid: d363ab1d119bd524184dc21859e09274, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 5359c5a94af55ef499aad95435e96746, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: fee89968e6b6ba44ea5e63c7b1325018, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.65, y: 1.125, z: 0}
+      handleRotation: {x: 0, y: 0, z: -45}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: -0.85, y: 1.25, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 2
+      handlePosition: {x: -0.85, y: 1.25, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1.2}
+  - doorKind: 7
+    doorMesh: {fileID: 4300000, guid: ea7dab337ee203744abf118b3b1c88a6, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: df14b213f9c44da4288bb7b7dac16b18, type: 2}
+    - {fileID: 2100000, guid: db89926930db13f4db43da88e830323f, type: 2}
+    - {fileID: 2100000, guid: df14b213f9c44da4288bb7b7dac16b18, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.65, y: 1.125, z: 0}
+      handleRotation: {x: 0, y: 0, z: -45}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: -0.85, y: 1.25, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 2
+      handlePosition: {x: -0.85, y: 1.25, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1.2}
+  - doorKind: 8
+    doorMesh: {fileID: 4300000, guid: 2a253339685fc39428afc4056bdd1dd8, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: 36269aad09ec6714188d7ec1886b5af1, type: 2}
+    - {fileID: 2100000, guid: 36269aad09ec6714188d7ec1886b5af1, type: 2}
+    - {fileID: 2100000, guid: 36269aad09ec6714188d7ec1886b5af1, type: 2}
+    - {fileID: 2100000, guid: b80337c3955c8e24fae393acf0b59a36, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.5, y: 1.085, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: -0.931, y: 1.085, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 2
+      handlePosition: {x: -0.931, y: 1.085, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1.2}
+  - doorKind: 9
+    doorMesh: {fileID: 4300000, guid: 2a253339685fc39428afc4056bdd1dd8, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: df14b213f9c44da4288bb7b7dac16b18, type: 2}
+    - {fileID: 2100000, guid: e89a38d39d3a2424182d434a4fe19fc1, type: 2}
+    - {fileID: 2100000, guid: df14b213f9c44da4288bb7b7dac16b18, type: 2}
+    - {fileID: 2100000, guid: b80337c3955c8e24fae393acf0b59a36, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.5, y: 1.085, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: -0.931, y: 1.085, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1}
+    - handleKind: 2
+      handlePosition: {x: -0.931, y: 1.085, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 1.2}
+  - doorKind: 10
+    doorMesh: {fileID: 4300000, guid: 29e36fee32bf77c48a96cb346febcc85, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: e89a38d39d3a2424182d434a4fe19fc1, type: 2}
+    - {fileID: 2100000, guid: 36269aad09ec6714188d7ec1886b5af1, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.831, y: 0.466, z: -0.038}
+      handleRotation: {x: 0, y: 0, z: 90}
+      handleScale: {x: 0.28, y: 0.4, z: 0.28}
+    - handleKind: 3
+      handlePosition: {x: -0.84, y: 0.622, z: -0.02}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 0.58, y: 0.58, z: 0.7}
+    - handleKind: 2
+      handlePosition: {x: -0.8299, y: 0.622, z: -0.02}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 0.58, y: 0.58, z: 0.7}
+  - doorKind: 11
+    doorMesh: {fileID: 4300000, guid: 874fbe4f740091d4faff2f76f71cec57, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: db89926930db13f4db43da88e830323f, type: 2}
+    - {fileID: 2100000, guid: 9264bf59d1d51a248aab12cedaad4103, type: 2}
+    - {fileID: 2100000, guid: db89926930db13f4db43da88e830323f, type: 2}
+    - {fileID: 2100000, guid: 9d7656cdfa7e1104a87373ba7e83b6d6, type: 2}
+    - {fileID: 2100000, guid: 9264bf59d1d51a248aab12cedaad4103, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 5359c5a94af55ef499aad95435e96746, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: fee89968e6b6ba44ea5e63c7b1325018, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -1, y: 0.1, z: -2}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 0.75, y: 0.75, z: 0.75}
+  - doorKind: 12
+    doorMesh: {fileID: 4300000, guid: 1cfb7a3a45b57ff43978cea047908600, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: e89a38d39d3a2424182d434a4fe19fc1, type: 2}
+    - {fileID: 2100000, guid: b80337c3955c8e24fae393acf0b59a36, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: c2742196aee26b54ca0725135240899a, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 6de1372159c7fdc498eb3d818137c05d, type: 3}
+    defaultLockedSound: {fileID: 0}
+    defaultLockingSound: {fileID: 0}
+    defaultUnlockingSound: {fileID: 0}
+    localPosition: {x: 0, y: -0.7, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: 0, y: -0.693, z: 0.0021}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 0.3, y: 0.3, z: 0.3}
+  - doorKind: 13
+    doorMesh: {fileID: 4300000, guid: 29e36fee32bf77c48a96cb346febcc85, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: e89a38d39d3a2424182d434a4fe19fc1, type: 2}
+    - {fileID: 2100000, guid: 36269aad09ec6714188d7ec1886b5af1, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 1, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.831, y: 0.466, z: -0.038}
+      handleRotation: {x: 0, y: 0, z: 90}
+      handleScale: {x: 0.28, y: 0.4, z: 0.28}
+    - handleKind: 3
+      handlePosition: {x: -0.84, y: 0.622, z: -0.02}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 0.58, y: 0.58, z: 0.7}
+    - handleKind: 2
+      handlePosition: {x: -0.8299, y: 0.622, z: -0.02}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 0.58, y: 0.58, z: 0.7}
+  - doorKind: 14
+    doorMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    doorMaterials:
+    - {fileID: 2100000, guid: d2f057fec6ddf4649b80ff31aab72fd7, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: -0.5, y: 1.05, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 1, y: 2.1, z: 0.2}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.4, y: -0.04, z: 0}
+      handleRotation: {x: 0, y: 0, z: 90}
+      handleScale: {x: 0.45, y: 1, z: 5}
+    - handleKind: 3
+      handlePosition: {x: -0.4, y: -0.04, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1.16, y: 0.5, z: 8.5}
+    - handleKind: 2
+      handlePosition: {x: -0.4, y: -0.04, z: 0}
+      handleRotation: {x: 0, y: 0, z: 0}
+      handleScale: {x: 1.16, y: 0.5, z: 11}
+  - doorKind: 15
+    doorMesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+    doorMaterials:
+    - {fileID: 2100000, guid: 7f2f7f65b6b4ae449b1364d84589a28f, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: 0, y: 0, z: 0}
+    localRotation: {x: 90, y: 0, z: 0}
+    localScale: {x: 1, y: 0.1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: 0, y: 0, z: 0}
+      handleRotation: {x: 0, y: 0, z: 90}
+      handleScale: {x: 6, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: 0, y: 0, z: 0}
+      handleRotation: {x: 90, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 23}
+    - handleKind: 2
+      handlePosition: {x: 0, y: 0, z: 0}
+      handleRotation: {x: 90, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 23}
+  - doorKind: 16
+    doorMesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+    doorMaterials:
+    - {fileID: 2100000, guid: 905cfdb67ccb68c44b9274ebdb31d7ed, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: 75fc3d443a8e3e0458aa842421fab70f, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 925dbffbc798e30478e81ea4596f27f5, type: 3}
+    defaultLockedSound: {fileID: 8300000, guid: 97c0470445cd64d4384864ba5907cb03, type: 3}
+    defaultLockingSound: {fileID: 8300000, guid: 90a5ec19824568443939a12e5171c6c1, type: 3}
+    defaultUnlockingSound: {fileID: 8300000, guid: 6fadd7005a8a5a04597265ac24ddbc99, type: 3}
+    localPosition: {x: -0.5, y: 0.5, z: 0}
+    localRotation: {x: 90, y: 0, z: 0}
+    localScale: {x: 1, y: 0.1, z: 1}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -0.3, y: 0, z: 0}
+      handleRotation: {x: 0, y: 0, z: 90}
+      handleScale: {x: 6, y: 1, z: 1}
+    - handleKind: 3
+      handlePosition: {x: -0.35, y: 0, z: 0}
+      handleRotation: {x: 90, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 23}
+    - handleKind: 2
+      handlePosition: {x: -0.35, y: 0, z: 0}
+      handleRotation: {x: 90, y: 0, z: 0}
+      handleScale: {x: 1, y: 1, z: 23}
+  - doorKind: 17
+    doorMesh: {fileID: 4300000, guid: 1cfb7a3a45b57ff43978cea047908600, type: 2}
+    doorMaterials:
+    - {fileID: 2100000, guid: e89a38d39d3a2424182d434a4fe19fc1, type: 2}
+    - {fileID: 2100000, guid: b80337c3955c8e24fae393acf0b59a36, type: 2}
+    defaultOpenSound: {fileID: 8300000, guid: c2742196aee26b54ca0725135240899a, type: 3}
+    defaultCloseSound: {fileID: 8300000, guid: 6de1372159c7fdc498eb3d818137c05d, type: 3}
+    defaultLockedSound: {fileID: 0}
+    defaultLockingSound: {fileID: 0}
+    defaultUnlockingSound: {fileID: 0}
+    localPosition: {x: -0.55, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0}
+    localScale: {x: 0.5, y: 0.99, z: 0.881}
+    handles:
+    - handleKind: 1
+      handlePosition: {x: -1.125, y: 0, z: 0.0021}
+      handleRotation: {x: 0, y: 0, z: 90}
+      handleScale: {x: 0.3, y: 0.3, z: 0.3}
+  HandleList:
+  - handleKind: 1
+    handlePrefab: {fileID: 681623900133297884, guid: cb341d9e21513cd4bb38b034d6532531, type: 3}
+  - handleKind: 3
+    handlePrefab: {fileID: 8611955806118476746, guid: 8ad4a0ecb0f364b48b5603755c87455d, type: 3}
+  - handleKind: 2
+    handlePrefab: {fileID: 2541376731032446022, guid: adc6c57099deee14aa1f75837bffa93c, type: 3}
+  PostList:
+  - doorKind: 2
+    leftPostPosition: {x: -3, y: 0, z: 0}
+    rightPostPosition: {x: 0, y: 0, z: 0}
+    postPrefab: {fileID: 7736807845757689965, guid: 98e470a3e77b4b44ea4ec832dbcf5412, type: 3}
+  - doorKind: 3
+    leftPostPosition: {x: -2, y: 0, z: 0}
+    rightPostPosition: {x: 0, y: 0, z: 0}
+    postPrefab: {fileID: 5417662977775386970, guid: d58431906ff13a84a912649c11d05a3e, type: 3}
+  - doorKind: 10
+    leftPostPosition: {x: -1, y: 0, z: 0}
+    rightPostPosition: {x: 0, y: 0, z: 0}
+    postPrefab: {fileID: 8674967652044559205, guid: 1896ae3c55754eb489a4fcc64e617b27, type: 3}
+  - doorKind: 13
+    leftPostPosition: {x: -1, y: 0, z: 0}
+    rightPostPosition: {x: 0, y: 0, z: 0}
+    postPrefab: {fileID: 8674967652044559205, guid: 1896ae3c55754eb489a4fcc64e617b27, type: 3}
+  MotionList:
+  - motionKind: 1
+    allowedDoorKinds: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000
+  - motionKind: 2
+    allowedDoorKinds: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000
+  - motionKind: 3
+    allowedDoorKinds: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000c0000000d0000000e0000000f0000001000000011000000

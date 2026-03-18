@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c4c31a3cef8e5bd4a8b61195ca9ad20d
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318975
+  packageName: OmniDoor3D
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/OmniDoor3D/Examples/Scripts/PressureSwitch.cs
+  uploadId: 756516

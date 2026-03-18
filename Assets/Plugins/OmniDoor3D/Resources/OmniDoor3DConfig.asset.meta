@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5c7717927008b024b80000ec318e26fa
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 318975
+  packageName: OmniDoor3D
+  packageVersion: 1.0
+  assetPath: Assets/Plugins/OmniDoor3D/Resources/OmniDoor3DConfig.asset
+  uploadId: 756516

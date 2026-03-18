@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a492ad976a27fd4696237e31889928f, type: 3}
+  m_Name: OmniDoor3DConfig
+  m_EditorClassIdentifier: 
+  DBList:
+  - {fileID: 11400000, guid: da8bf869f897c0d42ac136f1fcc76dea, type: 2}
+  - {fileID: 11400000, guid: 44b98c59fe7ecfe4491af8c0505eaebb, type: 2}
