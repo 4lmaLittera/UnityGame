@@ -27,7 +27,7 @@ public class AttackAnimationHelper : MonoBehaviour
     /// <summary>
     /// Called via Animation Event at the exact frame the attack swing begins.
     /// </summary>
-    public void StartAttack()
+    public void AnimationEvent_StartAttack()
     {
         if (_attackCollider != null) 
         {
@@ -38,7 +38,7 @@ public class AttackAnimationHelper : MonoBehaviour
     /// <summary>
     /// Called via Animation Event at the exact frame the attack swing ends.
     /// </summary>
-    public void EndAttack()
+    public void AnimationEvent_EndAttack()
     {
         if (_attackCollider != null) 
         {

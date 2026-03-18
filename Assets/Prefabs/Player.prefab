@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730a2841cef5e4a5b85eb7903e586160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  _maxHealth: 100
+  _maxHealth: 60
   _invulnerable: 0
   _knockbackMultiplier: 1
 --- !u!1 &659304959305824597

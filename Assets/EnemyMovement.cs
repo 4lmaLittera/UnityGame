@@ -24,6 +24,10 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
     [SerializeField] private float _navMeshSampleRadius = 12f;
     #endregion
 
+    #region Public Properties
+    public bool CanMove { get; set; } = true;
+    #endregion
+
     #region Private Fields
     private NavMeshAgent _navMeshAgent;
     private float _baseSpeed;
@@ -75,6 +79,22 @@ public class EnemyMovement : MonoBehaviour, IPoolableEnemy
     {
         if (_player != null && _navMeshAgent != null && _navMeshAgent.isActiveAndEnabled && _navMeshAgent.isOnNavMesh)
         {
+            if (!CanMove)
+            {
+                if (!_navMeshAgent.isStopped)
+                {
+                    _navMeshAgent.isStopped = true;
+                }
+                return;
+            }
+            else
+            {
+                if (_navMeshAgent.isStopped)
+                {
+                    _navMeshAgent.isStopped = false;
+                }
+            }
+
             // Apply speed reduction in water
             bool inWater = IsStandingInWater();
             _navMeshAgent.speed = inWater ? _baseSpeed * _waterSpeedMultiplier : _baseSpeed;

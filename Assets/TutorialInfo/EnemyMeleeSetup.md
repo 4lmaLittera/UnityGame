@@ -34,11 +34,11 @@ Now we tell the animation exactly when to turn the hitbox on and off.
 3.  **Find the Start Frame**: Scrub through the timeline and find the exact frame where the "swing" begins and should start dealing damage.
 4.  **Add Start Event**:
     *   Click the **Add Event** button (a small white rectangle with a plus sign, just below the timeline numbers).
-    *   In the Inspector, look for the "Function" dropdown and select `StartAttack()`.
+    *   In the Inspector, look for the **Function** field. If it is a dropdown, select `StartAttack()`. If it is a text field, type `StartAttack` exactly.
 5.  **Find the End Frame**: Scrub forward to the frame where the swing is finished and should stop dealing damage.
 6.  **Add End Event**:
     *   Click the **Add Event** button again.
-    *   In the Inspector, select `EndAttack()`.
+    *   In the **Function** field, select or type `EndAttack`.
 
 ## Summary of How it Works
 When the enemy plays the attack animation, it hits the first event marker. That calls `StartAttack()`, which turns on the `DamageTrigger` collider attached to the enemy's hand. If that hand sweeps through the player (who must be tagged "Player"), `OnTriggerEnter` fires, dealing damage and pushing the player back. When the animation hits the second event marker, `EndAttack()` is called, turning the collider off again.

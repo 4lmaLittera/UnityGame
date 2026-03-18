@@ -14,6 +14,11 @@ public class DamageTrigger : MonoBehaviour
     [Header("Cooldown")]
     [Tooltip("Prevents multiple hits in a single frame/swing.")]
     [SerializeField] private float _hitCooldown = 0.5f;
+    [Header("Audio")]
+    [Tooltip("Sound to play when hitting the player.")]
+    [SerializeField] private AudioClip _hitSound;
+    [Tooltip("Volume of the hit sound.")]
+    [SerializeField] private float _hitSoundVolume = 0.5f;
     #endregion
 
     #region Private Fields
@@ -40,6 +45,13 @@ public class DamageTrigger : MonoBehaviour
             knockbackDir.Normalize();
 
             health.TakeDamage(_damage, knockbackDir * _knockbackForce);
+
+            // Play hit sound if assigned
+            if (_hitSound != null)
+            {
+                AudioSource.PlayClipAtPoint(_hitSound, transform.position, _hitSoundVolume);
+            }
+
             _lastHitTime = Time.time;
         }
     }
