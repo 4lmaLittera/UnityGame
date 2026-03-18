@@ -5034,11 +5034,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8101620640790327826, guid: a86af659c52a1f54c924985f5d11a2b9, type: 3}
       propertyPath: m_Extents.x
-      value: 9.43
+      value: 10.51
       objectReference: {fileID: 0}
     - target: {fileID: 8101620640790327826, guid: a86af659c52a1f54c924985f5d11a2b9, type: 3}
       propertyPath: m_Extents.z
-      value: 9.43
+      value: 10.51
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7480,7 +7480,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 142.812, y: 150.4462}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &606741509
@@ -13375,10 +13375,10 @@ RectTransform:
   - {fileID: 1034663694}
   m_Father: {fileID: 1350957583}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -796.5309, y: 478.55603}
-  m_SizeDelta: {x: 253.6777, y: 75.6546}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 163.46912, y: -61.44397}
+  m_SizeDelta: {x: 253.67773, y: 75.6546}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1213697769
 MonoBehaviour:
@@ -15477,33 +15477,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: -0.5, y: 1.1, z: 0}
   m_TimeToStationary: 0.5
---- !u!54 &1368163267
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1368163257}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 122
-  m_CollisionDetection: 0
 --- !u!4 &1368342140 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3032647926719834167, guid: cf4ab81a9ba01734fa5a7945c05d0c7d, type: 3}
@@ -17253,9 +17226,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7159419689779532498, guid: cf148abd331a4f74ea7696147dafdea1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1368163263}
-    - targetCorrespondingSourceObject: {fileID: 7159419689779532498, guid: cf148abd331a4f74ea7696147dafdea1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1368163267}
   m_SourcePrefab: {fileID: 100100000, guid: cf148abd331a4f74ea7696147dafdea1, type: 3}
 --- !u!4 &1538369856 stripped
 Transform:
