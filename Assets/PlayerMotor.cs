@@ -16,11 +16,26 @@ public class PlayerMotor : MonoBehaviour
     [Range(0, 1)]
     [FormerlySerializedAs("airControlMultiplier")]
     [SerializeField] private float _airControlMultiplier = 0.2f;
+
+    [Header("Footstep Audio")]
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private PlayerCameraEffects _cameraEffects;
+    [SerializeField] private AudioClip[] _footstepClips;
+    [Tooltip("Used only when no camera bob source is available.")]
+    [SerializeField] private float _fallbackFootstepInterval = 0.45f;
+    [Tooltip("Multiplier for bob-based cadence. 1 = exactly one step per bob peak.")]
+    [SerializeField] private float _footstepCadenceMultiplier = 1f;
+    [SerializeField] private float _minFootstepInterval = 0.12f;
+    [SerializeField] private float _maxFootstepInterval = 0.65f;
+    [SerializeField] private float _minFootstepSpeed = 1f;
+    [Range(0f, 1f)]
+    [SerializeField] private float _footstepVolume = 0.7f;
     #endregion
 
     #region Private Fields
     private Rigidbody _rb;
     private PlayerMovementAbilities _abilities;
+    private float _nextFootstepTime;
     #endregion
 
     #region Properties
@@ -33,6 +48,8 @@ public class PlayerMotor : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _abilities = GetComponent<PlayerMovementAbilities>();
+        if (_audioSource == null) _audioSource = GetComponent<AudioSource>();
+        if (_cameraEffects == null) _cameraEffects = GetComponentInChildren<PlayerCameraEffects>();
 
         // Standard Professional Physics Setup
         _rb.freezeRotation = true;
@@ -79,6 +96,40 @@ public class PlayerMotor : MonoBehaviour
         {
             _rb.AddForce(moveDir * currentForce, ForceMode.Acceleration);
         }
+
+        float horizontalSpeed = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z).magnitude;
+        TryPlayFootstep(input, horizontalSpeed);
+    }
+
+    private void TryPlayFootstep(Vector2 input, float speed)
+    {
+        if (!_abilities.IsGrounded) return;
+        if (_audioSource == null || _footstepClips == null || _footstepClips.Length == 0) return;
+        if (input.sqrMagnitude < 0.01f || speed < _minFootstepSpeed) return;
+        if (Time.time < _nextFootstepTime) return;
+
+        AudioClip clip = _footstepClips[UnityEngine.Random.Range(0, _footstepClips.Length)];
+        if (clip == null) return;
+
+        _audioSource.PlayOneShot(clip, _footstepVolume);
+
+        _nextFootstepTime = Time.time + GetFootstepInterval(speed);
+    }
+
+    private float GetFootstepInterval(float speed)
+    {
+        float safeSpeed = Mathf.Max(_minFootstepSpeed, speed);
+        float interval = _fallbackFootstepInterval;
+
+        float bobFrequency = (_cameraEffects != null) ? _cameraEffects.BobFrequency : 0f;
+        if (bobFrequency > 0.01f)
+        {
+            // Camera uses Abs(Sin(distance * frequency)); peaks are PI apart.
+            interval = Mathf.PI / (safeSpeed * bobFrequency);
+        }
+
+        interval *= Mathf.Max(0.01f, _footstepCadenceMultiplier);
+        return Mathf.Clamp(interval, _minFootstepInterval, _maxFootstepInterval);
     }
     #endregion
 }
