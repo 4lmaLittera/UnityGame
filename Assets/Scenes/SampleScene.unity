@@ -666,6 +666,10 @@ PrefabInstance:
       propertyPath: m_OverrideArea
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4943153280635060797, guid: 4274b8ef2b0da4fe1be6c7678cdb9505, type: 3}
+      propertyPath: m_Area
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5587994360836016539, guid: 4274b8ef2b0da4fe1be6c7678cdb9505, type: 3}
       propertyPath: m_LocalScale.z
       value: 2.9243233
@@ -5434,9 +5438,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPoolManager
   _enemyPools:
-  - EnemyPrefab: {fileID: 0}
-    PoolSize: 0
-    SpawnWeight: 0
+  - EnemyPrefab: {fileID: 7589990619055680587, guid: 4db811ddd5af34e93be2467aa4169d06, type: 3}
+    PoolSize: 10
+    SpawnWeight: 3
   _player: {fileID: 1639367715}
   _spawnRadius: 20
   _spawnInterval: 1
@@ -9458,14 +9462,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 2083515388}
     m_Modifications:
     - target: {fileID: 4673736585398150859, guid: 31bc31c0a9fc7f0489ea5d29d58e8ebc, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3.0599403
-      objectReference: {fileID: 0}
-    - target: {fileID: 4673736585398150859, guid: 31bc31c0a9fc7f0489ea5d29d58e8ebc, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 5.5238447
-      objectReference: {fileID: 0}
-    - target: {fileID: 4673736585398150859, guid: 31bc31c0a9fc7f0489ea5d29d58e8ebc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.9407043
       objectReference: {fileID: 0}
@@ -9512,10 +9508,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6263245627480182244, guid: 31bc31c0a9fc7f0489ea5d29d58e8ebc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1512964735}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31bc31c0a9fc7f0489ea5d29d58e8ebc, type: 3}
 --- !u!1001 &985766146
 PrefabInstance:
@@ -10819,7 +10812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7690684326484014011, guid: 69e8bd2171d89a945bc8f4dc83fc0b0d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 173.59
+      value: 173
       objectReference: {fileID: 0}
     - target: {fileID: 7690684326484014011, guid: 69e8bd2171d89a945bc8f4dc83fc0b0d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14255,37 +14248,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a86af659c52a1f54c924985f5d11a2b9, type: 3}
---- !u!1 &1512964729 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6263245627480182244, guid: 31bc31c0a9fc7f0489ea5d29d58e8ebc, type: 3}
-  m_PrefabInstance: {fileID: 977023568}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1512964730 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4673736585398150859, guid: 31bc31c0a9fc7f0489ea5d29d58e8ebc, type: 3}
   m_PrefabInstance: {fileID: 977023568}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1512964735
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1512964729}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 10, y: 2.220446e-16, z: 10}
-  m_Center: {x: 0, y: 0, z: -0.0000019073486}
 --- !u!1001 &1521724410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14565,7 +14532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4835382487994953783, guid: cf148abd331a4f74ea7696147dafdea1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.398
+      value: -0.31
       objectReference: {fileID: 0}
     - target: {fileID: 4835382487994953783, guid: cf148abd331a4f74ea7696147dafdea1, type: 3}
       propertyPath: m_LocalPosition.z
