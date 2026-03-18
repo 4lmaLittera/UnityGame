@@ -30,6 +30,7 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private float _minFootstepSpeed = 1f;
     [Range(0f, 1f)]
     [SerializeField] private float _footstepVolume = 0.7f;
+    [SerializeField] private float _maxFootstepNoiseRadius = 20f;
     #endregion
 
     #region Private Fields
@@ -85,8 +86,19 @@ public class PlayerMotor : MonoBehaviour
             moveDir = Vector3.ProjectOnPlane(moveDir, _abilities.SlopeNormal).normalized;
         }
 
-        // 3. Determine how much power we have based on ground state
-        float currentForce = _abilities.IsGrounded ? _pushForce : _pushForce * _airControlMultiplier;
+        // 3. Determine how much power we have based on the current movement state
+        float currentForce = _pushForce;
+        
+        switch (_abilities.CurrentState)
+        {
+            case MovementState.Airborne:
+                currentForce = _pushForce * _airControlMultiplier;
+                break;
+            case MovementState.Grappling:
+                currentForce = 0f; // Don't apply normal movement force while grappling
+                break;
+            // Default uses full _pushForce (Idle, Moving, Sprinting)
+        }
 
         // 4. Measure speed along the slope surface (not just horizontal) to respect max speed on slopes
         Vector3 flatVel = Vector3.ProjectOnPlane(_rb.linearVelocity, _abilities.SlopeNormal);
@@ -112,6 +124,11 @@ public class PlayerMotor : MonoBehaviour
         if (clip == null) return;
 
         _audioSource.PlayOneShot(clip, _footstepVolume);
+
+        // --- NEW: Scale noise by speed ---
+        // If speed is 1 (slow walk), radius will be small. If speed is 10 (sprint), radius will be max.
+        float noiseRadius = Mathf.Lerp(1f, _maxFootstepNoiseRadius, speed / _maxSpeed);
+        NoiseSystem.EmitNoise(transform.position, noiseRadius);
 
         _nextFootstepTime = Time.time + GetFootstepInterval(speed);
     }

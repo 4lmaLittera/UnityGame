@@ -3255,7 +3255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
   m_SerializedVersion: 0
-  m_AgentTypeID: 0
+  m_AgentTypeID: -902729914
   m_CollectObjects: 0
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
@@ -5304,10 +5304,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPoolManager
   _enemyPools:
   - EnemyPrefab: {fileID: 8012261559146812761, guid: 977a7a3009e9843a794bc78b3a98e8e1, type: 3}
-    PoolSize: 10
+    PoolSize: 5
     SpawnWeight: 0
   - EnemyPrefab: {fileID: 392620831372368464, guid: 1cd3c263d7a67c94f994236269a70959, type: 3}
-    PoolSize: 10
+    PoolSize: 0
     SpawnWeight: 0
   _player: {fileID: 1639367715}
   _spawnRadius: 20

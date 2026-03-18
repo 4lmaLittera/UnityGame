@@ -3,6 +3,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+public enum MovementState
+{
+    Idle,
+    Moving,
+    Sprinting,
+    Airborne,
+    Crouching,
+    Grappling
+}
+
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovementAbilities : MonoBehaviour
 {
@@ -14,6 +24,9 @@ public class PlayerMovementAbilities : MonoBehaviour
     #endregion
 
     #region Serialized Fields
+    [Header("State Debugging")]
+    [SerializeField] private MovementState _currentState;
+
     [Header("Jump Settings")]
     [FormerlySerializedAs("jumpForce")]
     [SerializeField] private float _jumpForce = 5f;
@@ -53,6 +66,7 @@ public class PlayerMovementAbilities : MonoBehaviour
     // Professional standard: Public property with private setter
     // This allows PlayerMotor to read the state but not change it.
     public bool IsGrounded { get; private set; }
+    public MovementState CurrentState => _currentState;
     public Vector3 SlopeNormal { get; private set; } = Vector3.up;
     #endregion
 
@@ -68,7 +82,6 @@ public class PlayerMovementAbilities : MonoBehaviour
             _feetMaterial = Instantiate(_feetMaterial);
 
             // Pro Tip: Ensure your SphereCollider (Feet) is assigned this instanced material
-            // If you have multiple colliders, you may need to find the specific 'Feet' one.
             var colliders = GetComponents<Collider>();
             foreach (var col in colliders)
             {
@@ -78,6 +91,12 @@ public class PlayerMovementAbilities : MonoBehaviour
     }
 
     void FixedUpdate()
+    {
+        CheckGround();
+        UpdateState();
+    }
+
+    private void CheckGround()
     {
         // Perform the ground check and capture surface normal for slope handling
         RaycastHit groundHit;
@@ -93,8 +112,30 @@ public class PlayerMovementAbilities : MonoBehaviour
 
         _wasGrounded = IsGrounded;
         
-        // Track this so we know how fast we were falling next frame if we hit the ground
+        // Track vertical velocity for landing effects
         _lastVerticalVelocity = _rb.linearVelocity.y;
+    }
+
+    private void UpdateState()
+    {
+        // If we are grounded, determine if we are idle or moving
+        if (IsGrounded)
+        {
+            float horizontalSpeed = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z).magnitude;
+            
+            if (horizontalSpeed < 0.1f)
+                _currentState = MovementState.Idle;
+            else
+                _currentState = MovementState.Moving;
+        }
+        else
+        {
+            // Only switch to Airborne if we aren't doing something special like Grappling
+            if (_currentState != MovementState.Grappling)
+            {
+                _currentState = MovementState.Airborne;
+            }
+        }
     }
 
     // Professional Debugging: See the ray in the Scene View
@@ -123,6 +164,14 @@ public class PlayerMovementAbilities : MonoBehaviour
                 _audioSource.PlayOneShot(_jumpClip, _jumpVolume);
             }
         }
+    }
+
+    /// <summary>
+    /// Allows external systems (like GrapplingHook) to manually set the state.
+    /// </summary>
+    public void SetState(MovementState newState)
+    {
+        _currentState = newState;
     }
     #endregion
 

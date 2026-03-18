@@ -52,7 +52,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.4
   m_Height: 1
   m_Direction: 1
   m_Center: {x: -0.010073167, y: 0.23, z: 0.017185172}
@@ -421,9 +421,6 @@ PrefabInstance:
       addedObject: {fileID: 4333520738188044540}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7737422820151203087}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5912623608530838061}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
       insertIndex: -1
@@ -436,10 +433,10 @@ PrefabInstance:
       addedObject: {fileID: 8767985045532999979}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6866722133830577891}
+      addedObject: {fileID: 3606172802895499033}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3606172802895499033}
+      addedObject: {fileID: 6418790857821715474}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
       insertIndex: -1
       addedObject: {fileID: 803446115940630870}
@@ -1888,30 +1885,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   _maxHealth: 40
   _ragdollDuration: 3
---- !u!114 &7737422820151203087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8012261559146812761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d46929e3429c04bef8c2302f5a724a38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  _player: {fileID: 0}
-  _avoidancePriorityRange: {x: 20, y: 80}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _waterLayers:
-    serializedVersion: 2
-    m_Bits: 16
-  _waterTag: Water
-  _waterSpeedMultiplier: 0.4
-  _waterCheckDistance: 3
-  _navMeshSampleRadius: 12
 --- !u!54 &5912623608530838061
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1947,12 +1920,12 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8012261559146812761}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -902729914
   m_Radius: 0.5
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 180
   m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -1996,26 +1969,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6866722133830577891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8012261559146812761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44518d74ccdb843429b46a2419eaeeff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyCombat
-  _attackRange: 2.5
-  _attackCooldown: 1.5
-  _attackTriggerName: attack
-  _attackDuration: 1
-  _animator: {fileID: 8767985045532999979}
-  _navMeshAgent: {fileID: 1789236515289267801}
-  _enemyMovement: {fileID: 7737422820151203087}
-  _player: {fileID: 0}
 --- !u!114 &3606172802895499033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2029,6 +1982,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackAnimationHelper
   _attackCollider: {fileID: 8794196165709783956}
+--- !u!114 &6418790857821715474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8012261559146812761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76634a5ddc98402489446a44bf92482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBehaviorTree
+  _attackRange: 2
+  _chaseRange: 30
+  _visionRange: 40
+  _hearingRange: 1
+  _proximityDetectionRange: 2
+  _viewAngle: 45
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 9
+  _attackCooldown: 2
+  _attackDuration: 1
+  _player: {fileID: 0}
+  _animator: {fileID: 8767985045532999979}
+  _attackTrigger: attack
 --- !u!4 &8046011694210124950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8333627713332763490, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}

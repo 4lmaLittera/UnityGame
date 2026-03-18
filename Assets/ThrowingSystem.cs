@@ -29,6 +29,7 @@ public class ThrowingSystem : MonoBehaviour
     [SerializeField] private float _primaryThrowVolume = 1f;
     [Range(0f, 1f)]
     [SerializeField] private float _secondaryThrowVolume = 1f;
+    [SerializeField] private float _throwNoiseRadius = 20f;
     #endregion
 
     #region Private Fields
@@ -121,6 +122,9 @@ public class ThrowingSystem : MonoBehaviour
         }
 
         GameObject projectile = Instantiate(weaponPrefab, _throwPoint.position, _throwPoint.rotation);
+
+        // Emit noise for AI detection
+        NoiseSystem.EmitNoise(_throwPoint.position, _throwNoiseRadius);
 
         // --- PREVENTION: Do not hit the player ---
         Collider projectileCollider = projectile.GetComponent<Collider>();

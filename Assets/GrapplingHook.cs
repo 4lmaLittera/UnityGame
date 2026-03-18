@@ -57,11 +57,15 @@ public class GrapplingHook : MonoBehaviour
     private Vector3 _grapplePoint;
     private SpringJoint _joint;
     private bool _isGrappling;
+    private PlayerMovementAbilities _abilities;
     #endregion
 
     #region Unity Lifecycle
     void Awake()
     {
+        // Cache movement abilities to sync states
+        _abilities = _playerRb.GetComponent<PlayerMovementAbilities>();
+
         if (_grappleMesh != null)
         {
             _meshLink = _grappleMesh.GetComponent<StretchedMeshLink>();
@@ -73,7 +77,6 @@ public class GrapplingHook : MonoBehaviour
             }
 
             // Create a target transform for the grapple point
-            // We do NOT parent it to the player so it stays fixed in world space
             GameObject go = new GameObject("GrappleTarget");
             _grappleTargetTransform = go.transform;
 
@@ -94,25 +97,25 @@ public class GrapplingHook : MonoBehaviour
     #region Public Methods
     public void StartGrapple()
     {
-        // Prevent multiple simultaneous hooks
         if (_isGrappling) return;
 
         RaycastHit hit;
         if (Physics.Raycast(_cam.position, _cam.forward, out hit, _maxDistance, _grappleable))
         {
             _isGrappling = true;
+
+            // Notify movement system that we are now grappling
+            if (_abilities != null) _abilities.SetState(MovementState.Grappling);
+
             _grapplePoint = hit.point;
             _joint = _playerRb.gameObject.AddComponent<SpringJoint>();
             _joint.autoConfigureConnectedAnchor = false;
             _joint.connectedAnchor = _grapplePoint;
 
             float distanceFromPoint = Vector3.Distance(_playerRb.position, _grapplePoint);
-
-            // The distance grapple will try to keep from grapple point. 
             _joint.maxDistance = distanceFromPoint * 0.8f;
             _joint.minDistance = distanceFromPoint * 0.25f;
 
-            // Customize these values to change the feel of the grapple
             _joint.spring = _jointSpring;
             _joint.damper = _jointDamper;
             _joint.massScale = _jointMassScale;
@@ -131,26 +134,22 @@ public class GrapplingHook : MonoBehaviour
         {
             _isGrappling = false;
 
+            // Switch back to Airborne (or Idle/Moving if on ground)
+            if (_abilities != null) _abilities.SetState(MovementState.Airborne);
+
             if (_joint != null)
             {
-                // 1. Calculate the push strength based on current swing speed
                 Vector3 currentVel = _playerRb.linearVelocity;
                 float speed = currentVel.magnitude;
-
-                // 2. Blend the current velocity direction with the look direction
                 Vector3 moveDir = currentVel.normalized;
                 Vector3 lookDir = _cam.forward;
 
-                // 3. Combine directions and add upward influence
                 Vector3 combinedDir = Vector3.Lerp(moveDir, lookDir, _lookDirectionWeight).normalized;
-                combinedDir = (combinedDir + Vector3.up * 0.2f).normalized; // Slight upward tilt to the exit vector
+                combinedDir = (combinedDir + Vector3.up * 0.2f).normalized;
 
                 float pushStrength = Mathf.Clamp(speed * _velocityPushMultiplier, _minReleasePush, _maxReleasePush);
-
-                // 4. Apply the impulse boost + the flat upward kick
                 _playerRb.AddForce(combinedDir * pushStrength + Vector3.up * _releaseUpwardBoost, ForceMode.Impulse);
 
-                // 5. Clean up
                 Destroy(_joint);
                 _joint = null;
             }
