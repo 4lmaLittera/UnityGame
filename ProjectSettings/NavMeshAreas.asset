@@ -16,7 +16,7 @@ NavMeshProjectSettings:
   - name: Water
     cost: 2
   - name: Mud
-    cost: 9000
+    cost: 99999
   - name: 
     cost: 1
   - name: 
@@ -109,8 +109,8 @@ NavMeshProjectSettings:
       m_Flags: 0
   - serializedVersion: 3
     agentTypeID: -1923039037
-    agentRadius: 0.75
-    agentHeight: 2.25
+    agentRadius: 1.6
+    agentHeight: 4
     agentSlope: 45
     agentClimb: 2
     ledgeDropHeight: 20
@@ -127,10 +127,10 @@ NavMeshProjectSettings:
       m_Flags: 0
   - serializedVersion: 3
     agentTypeID: -902729914
-    agentRadius: 0.5
-    agentHeight: 1.54
+    agentRadius: 0.4
+    agentHeight: 1.5
     agentSlope: 45
-    agentClimb: 0.4
+    agentClimb: 0.3
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2

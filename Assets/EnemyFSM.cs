@@ -28,13 +28,20 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     [Header("Cornering Settings")]
     [Tooltip("The maximum speed when moving in a straight line.")]
     [SerializeField] private float _maxMoveSpeed = 8f;
-    
+
     [Tooltip("The speed multiplier when taking a sharp 90-degree turn.")]
     [Range(0.1f, 1f)]
     [SerializeField] private float _turnSpeedMultiplier = 0.4f;
 
     [Tooltip("How quickly the speed adjusts to the required cornering speed.")]
     [SerializeField] private float _speedAdaptationRate = 5f;
+
+    [Header("Environmental Settings")]
+    [Tooltip("Speed multiplier when walking through Mud (NavMesh area).")]
+    [SerializeField] private float _mudSpeedMultiplier = 0.4f;
+
+    [Tooltip("Speed multiplier when walking through Water (NavMesh area).")]
+    [SerializeField] private float _waterSpeedMultiplier = 0.6f;
 
     [Header("References")]
     [Tooltip("The target to chase. If empty, will find object tagged 'Player'.")]
@@ -51,6 +58,8 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     private NavMeshAgent _navMeshAgent;
     private float _nextAttackTime;
     private float _currentSpeedTarget;
+    private int _mudAreaMask;
+    private int _waterAreaMask;
     #endregion
 
     #region Unity Lifecycle
@@ -58,12 +67,20 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         if (_animator == null) _animator = GetComponentInChildren<Animator>();
-        
+
         if (_navMeshAgent != null)
         {
             _navMeshAgent.speed = _maxMoveSpeed;
             _currentSpeedTarget = _maxMoveSpeed;
         }
+
+        // Initialize Mud mask (Mud is index 5 by default in this project)
+        int mudIndex = NavMesh.GetAreaFromName("Mud");
+        _mudAreaMask = (mudIndex != -1) ? (1 << mudIndex) : 0;
+
+        // Initialize Water mask
+        int waterIndex = NavMesh.GetAreaFromName("Water");
+        _waterAreaMask = (waterIndex != -1) ? (1 << waterIndex) : 0;
     }
 
     void Start()
@@ -78,7 +95,7 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     void Update()
     {
         // SAFETY: Only run logic if alive and NavMesh is valid
-        if (_currentState == EnemyState.Dead || _navMeshAgent == null || !_navMeshAgent.isActiveAndEnabled || !_navMeshAgent.isOnNavMesh) 
+        if (_currentState == EnemyState.Dead || _navMeshAgent == null || !_navMeshAgent.isActiveAndEnabled || !_navMeshAgent.isOnNavMesh)
             return;
 
         ApplyCorneringSpeed();
@@ -152,28 +169,46 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     #region Cornering Logic
     /// <summary>
     /// Checks the path ahead and reduces speed if a sharp turn is coming up.
+    /// Also slows down if the enemy is walking through mud or water.
     /// </summary>
     private void ApplyCorneringSpeed()
     {
         if (_currentState != EnemyState.Chasing) return;
 
-        float targetSpeed = _maxMoveSpeed;
+        float baseSpeed = _maxMoveSpeed;
 
+        // 1. Apply Environmental Slowdown (Mud and Water)
+        NavMeshHit hit;
+        // Sample the position directly under the agent to see what area it's on
+        if (NavMesh.SamplePosition(transform.position, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            if ((hit.mask & _mudAreaMask) != 0)
+            {
+                baseSpeed *= _mudSpeedMultiplier;
+            }
+            else if ((hit.mask & _waterAreaMask) != 0)
+            {
+                baseSpeed *= _waterSpeedMultiplier;
+            }
+        }
+
+        float targetSpeed = baseSpeed;
+        // 2. Apply Cornering Slowdown
         // If we have a path with at least 2 points (current and next corner)
         if (_navMeshAgent.hasPath && _navMeshAgent.path.corners.Length > 1)
         {
             // Vector to the immediate steering target
             Vector3 vectorToNextCorner = (_navMeshAgent.steeringTarget - transform.position).normalized;
-            
+
             // Calculate angle between our current forward and the direction we need to go
             float angle = Vector3.Angle(transform.forward, vectorToNextCorner);
 
             // If angle is sharp, reduce speed
             // Example: 0 deg = 1.0x, 90 deg = _turnSpeedMultiplier, 180 deg = even slower
             float speedFactor = Mathf.Clamp01(1f - (angle / 120f)); // Normalizes angle to 0-1 range over 120 degrees
-            
-            // Blend between slow turn speed and fast straight speed
-            targetSpeed = Mathf.Lerp(_maxMoveSpeed * _turnSpeedMultiplier, _maxMoveSpeed, speedFactor);
+
+            // Blend between slow turn speed and the current base speed
+            targetSpeed = Mathf.Lerp(baseSpeed * _turnSpeedMultiplier, baseSpeed, speedFactor);
         }
 
         // Smoothly interpolate the actual agent speed to avoid jittery movement
@@ -208,7 +243,7 @@ public class EnemyFSM : MonoBehaviour, IPoolableEnemy
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _detectionRange);
-        
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _attackRange);
 

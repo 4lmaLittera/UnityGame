@@ -1883,7 +1883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4ce22b0e14224559a74e8c12bd01b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  _maxHealth: 40
+  _maxHealth: 20
   _ragdollDuration: 3
 --- !u!54 &5912623608530838061
 Rigidbody:
@@ -1996,7 +1996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBehaviorTree
   _attackRange: 2
   _chaseRange: 25
-  _visionRange: 30
+  _visionRange: 45
   _hearingRange: 30
   _proximityDetectionRange: 3
   _viewAngle: 90
@@ -2005,6 +2005,9 @@ MonoBehaviour:
     m_Bits: 9
   _attackCooldown: 2
   _attackDuration: 1
+  _maxMoveSpeed: 8
+  _mudSpeedMultiplier: 0.4
+  _waterSpeedMultiplier: 0.6
   _player: {fileID: 0}
   _animator: {fileID: 8767985045532999979}
   _attackTrigger: attack

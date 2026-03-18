@@ -14,15 +14,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0fe5c2fba18534747a0efb57f18f0697, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0fe5c2fba18534747a0efb57f18f0697, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0fe5c2fba18534747a0efb57f18f0697, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0fe5c2fba18534747a0efb57f18f0697, type: 3}
       propertyPath: m_LocalPosition.x
@@ -560,6 +560,8 @@ MonoBehaviour:
   _maxMoveSpeed: 8
   _turnSpeedMultiplier: 0.1
   _speedAdaptationRate: 5
+  _mudSpeedMultiplier: 0.4
+  _waterSpeedMultiplier: 0.6
   _player: {fileID: 0}
   _animator: {fileID: 9182653215861862629}
   _attackTrigger: attack

@@ -35,6 +35,16 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
     [Tooltip("How long the enemy stands still during their attack animation.")]
     [SerializeField] private float _attackDuration = 1.0f;
 
+    [Header("Environmental Settings")]
+    [Tooltip("The maximum speed when moving in a straight line on normal ground.")]
+    [SerializeField] private float _maxMoveSpeed = 8f;
+
+    [Tooltip("Speed multiplier when walking through Mud (NavMesh area).")]
+    [SerializeField] private float _mudSpeedMultiplier = 0.4f;
+
+    [Tooltip("Speed multiplier when walking through Water (NavMesh area).")]
+    [SerializeField] private float _waterSpeedMultiplier = 0.6f;
+
     [Header("References")]
     [Tooltip("The target to chase and attack. If left empty, will find the object tagged 'Player'.")]
     [SerializeField] private Transform _player;
@@ -55,6 +65,8 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
     private bool _isChasing;
     private bool _hasHeardNoise;
     private Vector3 _lastNoisePosition;
+    private int _mudAreaMask;
+    private int _waterAreaMask;
     #endregion
 
     #region Unity Lifecycle
@@ -63,6 +75,19 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
         _navMeshAgent = GetComponent<NavMeshAgent>();
         if (_animator == null) _animator = GetComponentInChildren<Animator>();
         
+        if (_navMeshAgent != null)
+        {
+            _navMeshAgent.speed = _maxMoveSpeed;
+        }
+
+        // Initialize Mud mask
+        int mudIndex = NavMesh.GetAreaFromName("Mud");
+        _mudAreaMask = (mudIndex != -1) ? (1 << mudIndex) : 0;
+
+        // Initialize Water mask
+        int waterIndex = NavMesh.GetAreaFromName("Water");
+        _waterAreaMask = (waterIndex != -1) ? (1 << waterIndex) : 0;
+
         ConstructBehaviorTree();
     }
 
@@ -91,7 +116,35 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
         if (_isDead || _rootNode == null || _navMeshAgent == null || !_navMeshAgent.isActiveAndEnabled || !_navMeshAgent.isOnNavMesh) 
             return;
         
+        UpdateEnvironmentalSpeed();
         _rootNode.Evaluate();
+    }
+    #endregion
+
+    #region Movement Logic
+    /// <summary>
+    /// Checks if the agent is on a special NavMesh area (like Mud or Water) and adjusts speed.
+    /// </summary>
+    private void UpdateEnvironmentalSpeed()
+    {
+        float targetSpeed = _maxMoveSpeed;
+
+        NavMeshHit hit;
+        // Sample the position directly under the agent to see what area it's on
+        if (NavMesh.SamplePosition(transform.position, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            if ((hit.mask & _mudAreaMask) != 0)
+            {
+                targetSpeed *= _mudSpeedMultiplier;
+            }
+            else if ((hit.mask & _waterAreaMask) != 0)
+            {
+                targetSpeed *= _waterSpeedMultiplier;
+            }
+        }
+
+        // Apply speed directly
+        _navMeshAgent.speed = targetSpeed;
     }
     #endregion
 
