@@ -1995,11 +1995,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBehaviorTree
   _attackRange: 2
-  _chaseRange: 30
-  _visionRange: 40
-  _hearingRange: 1
-  _proximityDetectionRange: 2
-  _viewAngle: 45
+  _chaseRange: 25
+  _visionRange: 30
+  _hearingRange: 30
+  _proximityDetectionRange: 3
+  _viewAngle: 90
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 9

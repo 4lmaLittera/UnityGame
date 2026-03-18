@@ -554,8 +554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyFSM
   _currentState: 0
+  _detectionRange: 80
   _attackRange: 2
-  _chaseRange: 15
   _attackCooldown: 1.5
   _player: {fileID: 0}
   _animator: {fileID: 9182653215861862629}

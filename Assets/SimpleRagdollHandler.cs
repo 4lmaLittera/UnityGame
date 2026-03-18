@@ -23,8 +23,9 @@ public class SimpleRagdollHandler : MonoBehaviour, IRagdollHandler
 
         if (_agent != null) _agent.enabled = false;
         
-        var movement = GetComponent<EnemyMovement>();
-        if (movement != null) movement.enabled = false;
+        // Disable new AI brains
+        if (TryGetComponent<EnemyBehaviorTree>(out var tree)) tree.enabled = false;
+        if (TryGetComponent<EnemyFSM>(out var fsm)) fsm.enabled = false;
         
         _rb.isKinematic = false;
         _rb.useGravity = true;

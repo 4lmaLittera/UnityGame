@@ -74,8 +74,9 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler, IPoolableEnemy
         // 2. Disable root logic and physics
         if (_agent != null) _agent.enabled = false;
 
-        var movement = GetComponent<EnemyMovement>();
-        if (movement != null) movement.enabled = false;
+        // Disable new AI brains
+        if (TryGetComponent<EnemyBehaviorTree>(out var tree)) tree.enabled = false;
+        if (TryGetComponent<EnemyFSM>(out var fsm)) fsm.enabled = false;
 
         foreach (var col in _rootColliders) col.enabled = false;
         _rootRb.isKinematic = true;
@@ -121,8 +122,10 @@ public class PartRagdollHandler : MonoBehaviour, IRagdollHandler, IPoolableEnemy
 
         // Re-enable logic
         if (_agent != null) _agent.enabled = true;
-        var movement = GetComponent<EnemyMovement>();
-        if (movement != null) movement.enabled = true;
+        
+        // Re-enable AI brains
+        if (TryGetComponent<EnemyBehaviorTree>(out var tree)) tree.enabled = true;
+        if (TryGetComponent<EnemyFSM>(out var fsm)) fsm.enabled = true;
 
         // Reset Bones to animation state
         foreach (var rb in _boneRigidbodies)

@@ -39,20 +39,28 @@ public class MapGeneratorMenu : EditorWindow
         CreateObstacle(new Vector3(0, 1.5f, 0), new Vector3(4, 3, 4), mapRoot.transform); // Center piece
 
         // 4. Spawn Enemies
-        // Find the existing enemy in the scene to clone it
-        EnemyMovement existingEnemy = GameObject.FindObjectOfType<EnemyMovement>();
-        if (existingEnemy != null)
+        // Find an existing enemy in the scene to clone it
+        GameObject existingEnemyObj = null;
+        var tree = GameObject.FindObjectOfType<EnemyBehaviorTree>();
+        if (tree != null) existingEnemyObj = tree.gameObject;
+        else 
         {
-            SpawnEnemy(existingEnemy.gameObject, new Vector3(15, 1f, 15), mapRoot.transform);
-            SpawnEnemy(existingEnemy.gameObject, new Vector3(-15, 1f, -15), mapRoot.transform);
-            SpawnEnemy(existingEnemy.gameObject, new Vector3(15, 1f, -15), mapRoot.transform);
-            SpawnEnemy(existingEnemy.gameObject, new Vector3(-15, 1f, 15), mapRoot.transform);
+            var fsm = GameObject.FindObjectOfType<EnemyFSM>();
+            if (fsm != null) existingEnemyObj = fsm.gameObject;
+        }
+
+        if (existingEnemyObj != null)
+        {
+            SpawnEnemy(existingEnemyObj, new Vector3(15, 1f, 15), mapRoot.transform);
+            SpawnEnemy(existingEnemyObj, new Vector3(-15, 1f, -15), mapRoot.transform);
+            SpawnEnemy(existingEnemyObj, new Vector3(15, 1f, -15), mapRoot.transform);
+            SpawnEnemy(existingEnemyObj, new Vector3(-15, 1f, 15), mapRoot.transform);
             
             Debug.Log("Simple Map and Enemies Generated Successfully!");
         }
         else 
         {
-            Debug.LogWarning("Map generated, but could not find an existing 'Enemy' in the scene to clone. Please place one manually or check your scripts.");
+            Debug.LogWarning("Map generated, but could not find an existing 'Enemy' (FSM or Tree) in the scene to clone. Please place one manually or check your scripts.");
         }
 
         // Remind user to bake navmesh
@@ -90,7 +98,8 @@ public class MapGeneratorMenu : EditorWindow
         NavMeshAgent agent = newEnemy.GetComponent<NavMeshAgent>();
         if (agent != null) agent.enabled = true;
         
-        EnemyMovement movement = newEnemy.GetComponent<EnemyMovement>();
-        if (movement != null) movement.enabled = true;
+        // Ensure AI brains are enabled
+        if (newEnemy.TryGetComponent<EnemyBehaviorTree>(out var tree)) tree.enabled = true;
+        if (newEnemy.TryGetComponent<EnemyFSM>(out var fsm)) fsm.enabled = true;
     }
 }
