@@ -202,10 +202,17 @@ public class EnemyPoolManager : MonoBehaviour
             NavMeshAgent agentComp = enemy.GetComponent<NavMeshAgent>();
             float agentRadius = agentComp != null ? agentComp.radius : 0.5f;
             float agentHeight = agentComp != null ? agentComp.height : 2f;
-            Vector3 capsuleBottom = hit.position + Vector3.up * agentRadius;
+            
+            // Lift the bottom up slightly to avoid false positives with the floor it's standing on
+            Vector3 capsuleBottom = hit.position + Vector3.up * (agentRadius + 0.1f);
             Vector3 capsuleTop    = hit.position + Vector3.up * (agentHeight - agentRadius);
 
-            if (Physics.CheckCapsule(capsuleBottom, capsuleTop, agentRadius * 0.9f))
+            // We only want to check against actual obstacles, not Triggers or Water.
+            // DefaultRaycastLayers includes everything except IgnoreRaycast layer.
+            // We then subtract any layers marked as forbidden (like Water).
+            int checkMask = Physics.DefaultRaycastLayers & ~_forbiddenSpawnLayers.value;
+
+            if (Physics.CheckCapsule(capsuleBottom, capsuleTop, agentRadius * 0.9f, checkMask, QueryTriggerInteraction.Ignore))
             {
                 // Spawn point is blocked by geometry — skip and retry next interval.
                 return;
