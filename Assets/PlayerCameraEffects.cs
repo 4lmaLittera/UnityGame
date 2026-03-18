@@ -39,6 +39,8 @@ public class PlayerCameraEffects : MonoBehaviour
     private float _targetDip;
     private float _currentDip;
 
+    public float BobFrequency => _bobFrequency;
+
     void Awake()
     {
         _cam = GetComponent<Camera>();

@@ -25,6 +25,8 @@
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.7z filter=lfs diff=lfs merge=lfs -text
 *.rar filter=lfs diff=lfs merge=lfs -text
-# Note: .unity (Scenes), .mat (Materials) and .prefab (Prefabs) are NOT in LFS 
-# to allow for YAML merging and diffing.
-*.prefab !text !filter !merge !diff
+# Note: .unity (Scenes), .mat (Materials) and .prefab (Prefabs) use UnityYAMLMerge.
+*.unity merge=unityyamlmerge
+*.prefab merge=unityyamlmerge
+*.asset merge=unityyamlmerge
+*.mat merge=unityyamlmerge

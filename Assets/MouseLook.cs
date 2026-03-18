@@ -14,6 +14,8 @@ public class MouseLook : MonoBehaviour
     private float _yRotation = 0f;
     private Vector2 _lookInput;
     private Rigidbody _playerRb;
+    private PlayerHealth _health;
+    private bool _isDead = false;
     #endregion
 
     #region Unity Lifecycle
@@ -22,6 +24,20 @@ public class MouseLook : MonoBehaviour
         if (_playerBody != null)
         {
             _playerRb = _playerBody.GetComponent<Rigidbody>();
+            _health = _playerBody.GetComponent<PlayerHealth>();
+        }
+
+        if (_health != null)
+        {
+            _health.OnPlayerDeath += HandlePlayerDeath;
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (_health != null)
+        {
+            _health.OnPlayerDeath -= HandlePlayerDeath;
         }
     }
 
@@ -39,6 +55,8 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
+        if (_isDead) return;
+
         // 1. Process Input with deltaTime
         float mouseX = _lookInput.x * _sensitivity * Time.deltaTime;
         float mouseY = _lookInput.y * _sensitivity * Time.deltaTime;
@@ -68,7 +86,22 @@ public class MouseLook : MonoBehaviour
     #region Input Handlers
     public void OnLook(InputValue value)
     {
+        if (_isDead)
+        {
+            _lookInput = Vector2.zero;
+            return;
+        }
         _lookInput = value.Get<Vector2>();
+    }
+    #endregion
+
+    #region Private Methods
+    private void HandlePlayerDeath()
+    {
+        _isDead = true;
+        _lookInput = Vector2.zero;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
     #endregion
 }
