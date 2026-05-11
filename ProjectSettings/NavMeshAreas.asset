@@ -11,10 +11,10 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 4
+  - name: 
+    cost: 0
   - name: Water
-    cost: 2
-  - name: Water
-    cost: 2
+    cost: 3
   - name: Mud
     cost: 99999
   - name: 

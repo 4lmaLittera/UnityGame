@@ -59,7 +59,6 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
     #region Private Fields
     private NavMeshAgent _navMeshAgent;
     private Node _rootNode;
-    private float _nextAttackTime;
     private float _attackEndTime;
     private bool _isDead;
     private bool _isChasing;
@@ -67,6 +66,8 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
     private Vector3 _lastNoisePosition;
     private int _mudAreaMask;
     private int _waterAreaMask;
+    private EnemyStateLabel _stateLabel;
+    private string _currentStateName;
     #endregion
 
     #region Unity Lifecycle
@@ -74,11 +75,14 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         if (_animator == null) _animator = GetComponentInChildren<Animator>();
-        
+
         if (_navMeshAgent != null)
         {
             _navMeshAgent.speed = _maxMoveSpeed;
         }
+
+        _stateLabel = GetComponent<EnemyStateLabel>();
+        if (_stateLabel == null) _stateLabel = gameObject.AddComponent<EnemyStateLabel>();
 
         // Initialize Mud mask
         int mudIndex = NavMesh.GetAreaFromName("Mud");
@@ -113,11 +117,12 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
     void Update()
     {
         // SAFETY: Only evaluate BT if alive and agent is properly on NavMesh
-        if (_isDead || _rootNode == null || _navMeshAgent == null || !_navMeshAgent.isActiveAndEnabled || !_navMeshAgent.isOnNavMesh) 
+        if (_isDead || _rootNode == null || _navMeshAgent == null || !_navMeshAgent.isActiveAndEnabled || !_navMeshAgent.isOnNavMesh)
             return;
-        
-        UpdateEnvironmentalSpeed();
+
+        _currentStateName = "Idle";
         _rootNode.Evaluate();
+        if (_stateLabel != null) _stateLabel.SetState(_currentStateName);
     }
     #endregion
 
@@ -196,65 +201,70 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
 
         // 0. Stay Still Node
         ConditionNode isMidAttack = new ConditionNode(() => Time.time < _attackEndTime);
-        ActionNode freezeAgent = new ActionNode(() => 
+        ActionNode freezeAgent = new ActionNode(() =>
         {
             if (IsAgentValid())
             {
                 _navMeshAgent.isStopped = true;
                 _navMeshAgent.velocity = Vector3.zero;
             }
+            _currentStateName = "Striking";
             return NodeState.Running;
         });
         Sequence stayStillSequence = new Sequence(new List<Node> { isMidAttack, freezeAgent });
 
-        // 1. Attack Sequence (Requires visible within Attack Range)
-        ConditionNode canAttack = new ConditionNode(() => 
-            _player != null && Vector3.Distance(transform.position, _player.position) <= _attackRange && Time.time >= _nextAttackTime && CanSeePlayer(_visionRange));
-        
-        ActionNode performAttack = new ActionNode(() => 
+        // 1. Attack Sequence — Cooldown decorator owns the attack rate-limit
+        ConditionNode canAttack = new ConditionNode(() =>
+            _player != null &&
+            Vector3.Distance(transform.position, _player.position) <= _attackRange &&
+            CanSeePlayer(_visionRange));
+
+        ActionNode performAttack = new ActionNode(() =>
         {
-            _nextAttackTime = Time.time + _attackCooldown;
             _attackEndTime = Time.time + _attackDuration;
             if (_animator != null) _animator.SetTrigger(_attackTrigger);
-            
+
             if (IsAgentValid())
             {
                 _navMeshAgent.isStopped = true;
                 _navMeshAgent.velocity = Vector3.zero;
             }
-            
+
             _hasHeardNoise = false;
+            _currentStateName = "Attacking";
             return NodeState.Success;
         });
 
-        Sequence triggerAttackSequence = new Sequence(new List<Node> { canAttack, performAttack });
+        Cooldown attackCooldown = new Cooldown(_attackCooldown, performAttack);
+        Sequence triggerAttackSequence = new Sequence(new List<Node> { canAttack, attackCooldown });
 
-        // 2. Chase Sequence (Uses Hysteresis: Start at ChaseRange, Stop at VisionRange)
-        ConditionNode canChase = new ConditionNode(() => 
+        // 2. Chase Parallel — scan sensors AND move at the same time
+        //    Scan branch: refreshes environmental speed and vision hysteresis flag
+        ActionNode scanEnvironment = new ActionNode(() =>
         {
-            if (_isChasing)
-            {
-                _isChasing = CanSeePlayer(_visionRange);
-            }
-            else
-            {
-                _isChasing = CanSeePlayer(_chaseRange);
-            }
-            return _isChasing;
+            UpdateEnvironmentalSpeed();
+            _isChasing = _isChasing ? CanSeePlayer(_visionRange) : CanSeePlayer(_chaseRange);
+            return _isChasing ? NodeState.Success : NodeState.Failure;
         });
-        
-        ActionNode chasePlayer = new ActionNode(() => 
+
+        //    Movement branch: drives the NavMeshAgent to the player's position
+        ActionNode chasePlayer = new ActionNode(() =>
         {
+            if (!_isChasing) return NodeState.Failure;
             if (IsAgentValid())
             {
                 _navMeshAgent.isStopped = false;
                 _navMeshAgent.SetDestination(_player.position);
             }
             _hasHeardNoise = false;
+            _currentStateName = "Chasing";
             return NodeState.Running;
         });
 
-        Sequence visualChaseSequence = new Sequence(new List<Node> { canChase, chasePlayer });
+        Parallel chaseParallel = new Parallel(
+            new List<Node> { scanEnvironment, chasePlayer },
+            ParallelPolicy.RequireAll,
+            ParallelPolicy.RequireOne);
 
         // 3. Noise Chase Sequence
         ConditionNode hasHeardNoise = new ConditionNode(() => _hasHeardNoise);
@@ -264,7 +274,8 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
 
             _navMeshAgent.isStopped = false;
             _navMeshAgent.SetDestination(_lastNoisePosition);
-            
+            _currentStateName = "Investigating";
+
             if (!_navMeshAgent.pathPending && _navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance + 0.5f)
             {
                 _hasHeardNoise = false;
@@ -276,7 +287,7 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
         Sequence noiseChaseSequence = new Sequence(new List<Node> { hasHeardNoise, moveToNoise });
 
         // 4. Root Selector
-        _rootNode = new Selector(new List<Node> { stayStillSequence, triggerAttackSequence, visualChaseSequence, noiseChaseSequence });
+        _rootNode = new Selector(new List<Node> { stayStillSequence, triggerAttackSequence, chaseParallel, noiseChaseSequence });
     }
     #endregion
 
@@ -286,7 +297,6 @@ public class EnemyBehaviorTree : MonoBehaviour, IPoolableEnemy
         _isDead = false;
         _isChasing = false;
         _attackEndTime = 0f;
-        _nextAttackTime = 0f;
         _hasHeardNoise = false;
         if (_navMeshAgent != null)
         {

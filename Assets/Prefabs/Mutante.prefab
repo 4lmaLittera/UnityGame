@@ -437,6 +437,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6418790857821715474}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4790557584979976432}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}
       insertIndex: -1
       addedObject: {fileID: 803446115940630870}
@@ -2011,6 +2014,23 @@ MonoBehaviour:
   _player: {fileID: 0}
   _animator: {fileID: 8767985045532999979}
   _attackTrigger: attack
+--- !u!114 &-4790557584979976432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8012261559146812761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed80156b172a1943acad9dec5c219bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStateLabel
+  _offset: {x: 0, y: 2.5, z: 0}
+  _color: {r: 1, g: 1, b: 1, a: 1}
+  _fontSize: 205
+  _characterSize: 0.05
+  _fontStyle: 1
 --- !u!4 &8046011694210124950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8333627713332763490, guid: 4cbf52ea9cee3a445b816220425ebf01, type: 3}

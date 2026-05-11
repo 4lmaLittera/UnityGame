@@ -422,6 +422,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0fe5c2fba18534747a0efb57f18f0697, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1295617462154966199}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0fe5c2fba18534747a0efb57f18f0697, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3013414609265246244}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: 0fe5c2fba18534747a0efb57f18f0697, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6229845865427532237}
@@ -557,6 +560,14 @@ MonoBehaviour:
   _detectionRange: 80
   _attackRange: 2
   _attackCooldown: 1.5
+  _viewAngle: 140
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 9
+  _proximityDetectionRange: 2.5
+  _patrolRadius: 15
+  _patrolWaitTime: 2
+  _searchDuration: 5
   _maxMoveSpeed: 8
   _turnSpeedMultiplier: 0.1
   _speedAdaptationRate: 5
@@ -565,6 +576,23 @@ MonoBehaviour:
   _player: {fileID: 0}
   _animator: {fileID: 9182653215861862629}
   _attackTrigger: attack
+--- !u!114 &-3013414609265246244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392620831372368464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed80156b172a1943acad9dec5c219bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStateLabel
+  _offset: {x: 0, y: 5, z: 0}
+  _color: {r: 1, g: 1, b: 1, a: 1}
+  _fontSize: 60
+  _characterSize: 0.05
+  _fontStyle: 1
 --- !u!1 &483776172979632395 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1082271958561512970, guid: 0fe5c2fba18534747a0efb57f18f0697, type: 3}
